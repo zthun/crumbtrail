@@ -6,6 +6,6 @@ better suited for unit testing.
 ## Installation
 
 ```sh
-npm install @zthun/crumbtrail-fs
-yarn add @zthun/crumbtrail-fs
+npm install @zthun/crumbtrail-nest
+yarn add @zthun/crumbtrail-nest
 ```
