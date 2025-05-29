@@ -1,0 +1,12 @@
+{
+  "extends": "./.config/.tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "packages",
+    "target": "esnext",
+    "paths": {
+      "@zthun/crumbtrail-fs": ["crumbtrail-fs/src/index"],
+      "@zthun/crumbtrail-nest": ["crumbtrail-nest/src/index"],
+    }
+  },
+  "include": ["**/*.ts", "**/*.mts"]
+}
