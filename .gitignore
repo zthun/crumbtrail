@@ -1,3 +1,20 @@
+# Outputs
+coverage
+reports
+*.lerna_backup
+*.tgz
+.rpt2_cache
+.certificates
+
+# Secrets
+.secrets
+
+# OS Turds
+.DS_Store
+
+# TypeScript v1 declaration files
+typings/
+
 # Logs
 logs
 *.log
@@ -72,11 +89,8 @@ web_modules/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
+# dotenv environment variables file
+.env.*.local
 .env.local
 
 # parcel-bundler cache (https://parceljs.org/)
