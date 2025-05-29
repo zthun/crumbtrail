@@ -2455,7 +2455,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^22.15.21":
+"@types/node@npm:*, @types/node@npm:^22.15.24":
   version: 22.15.24
   resolution: "@types/node@npm:22.15.24"
   dependencies:
@@ -2468,15 +2468,6 @@ __metadata:
   version: 2.4.4
   resolution: "@types/normalize-package-data@npm:2.4.4"
   checksum: 10c0/aef7bb9b015883d6f4119c423dd28c4bdc17b0e8a0ccf112c78b4fe0e91fbc4af7c6204b04bba0e199a57d2f3fbbd5b4a14bf8739bf9d2a39b2a0aad545e0f86
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^19.1.5":
-  version: 19.1.6
-  resolution: "@types/react@npm:19.1.6"
-  dependencies:
-    csstype: "npm:^3.0.2"
-  checksum: 10c0/8b10b198e28997b3c57559750f8bcf5ae7b33c554b16b6f4fe2ece1d4de6a2fc8cb53e7effe08ec9cb939d2f479eb97c5e08aac2cf83b10a90164fe451cc8ea2
   languageName: node
   linkType: hard
 
@@ -2499,13 +2490,6 @@ __metadata:
     "@types/methods": "npm:^1.1.4"
     "@types/superagent": "npm:^8.1.0"
   checksum: 10c0/a2080f870154b09db123864a484fb633bc9e2a0f7294a194388df4c7effe5af9de36d5a5ebf819f72b404fa47b5e813c47d5a3a51354251fd2fa8589bfb64f2c
-  languageName: node
-  linkType: hard
-
-"@types/uuid@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "@types/uuid@npm:10.0.0"
-  checksum: 10c0/9a1404bf287164481cb9b97f6bb638f78f955be57c40c6513b7655160beb29df6f84c915aaf4089a1559c216557dc4d2f79b48d978742d3ae10b937420ddac60
   languageName: node
   linkType: hard
 
@@ -2860,6 +2844,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@zthun/crumbtrail-fs@workspace:packages/crumbtrail-fs":
+  version: 0.0.0-use.local
+  resolution: "@zthun/crumbtrail-fs@workspace:packages/crumbtrail-fs"
+  dependencies:
+    glob: "npm:^11.0.2"
+    lodash-es: "npm:^4.17.21"
+    vite: "npm:^6.3.5"
+    vitest: "npm:^3.1.4"
+  languageName: unknown
+  linkType: soft
+
 "@zthun/crumbtrail@workspace:.":
   version: 0.0.0-use.local
   resolution: "@zthun/crumbtrail@workspace:."
@@ -2867,10 +2862,8 @@ __metadata:
     "@commitlint/cli": "npm:^19.8.1"
     "@commitlint/config-conventional": "npm:^19.8.1"
     "@types/lodash-es": "npm:^4.17.12"
-    "@types/node": "npm:^22.15.21"
-    "@types/react": "npm:^19.1.5"
+    "@types/node": "npm:^22.15.24"
     "@types/supertest": "npm:^6.0.3"
-    "@types/uuid": "npm:^10.0.0"
     "@vitest/coverage-istanbul": "npm:^3.1.4"
     "@zthun/lint-janitor": "npm:^18.1.0"
     "@zthun/lint-janitor-config": "npm:^18.1.0"
@@ -4391,13 +4384,6 @@ __metadata:
   bin:
     cssesc: bin/cssesc
   checksum: 10c0/6bcfd898662671be15ae7827120472c5667afb3d7429f1f917737f3bf84c4176003228131b643ae74543f17a394446247df090c597bb9a728cce298606ed0aa7
-  languageName: node
-  linkType: hard
-
-"csstype@npm:^3.0.2":
-  version: 3.1.3
-  resolution: "csstype@npm:3.1.3"
-  checksum: 10c0/80c089d6f7e0c5b2bd83cf0539ab41474198579584fa10d86d0cafe0642202343cbc119e076a0b1aece191989477081415d66c9fefbf3c957fc2fc4b7009f248
   languageName: node
   linkType: hard
 

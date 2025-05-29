@@ -1,0 +1,43 @@
+{
+  "name": "@zthun/crumbtrail-fs",
+  "version": "1.0.0",
+  "description": "A better file system module for node",
+  "author": "Anthony Bonta",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zthun/crumbtrail",
+    "directory": "packages/crumbtrail-fs"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "require": "./dist/index.cjs",
+    "import": "./dist/index.js"
+  },
+  "engines": {
+    "node": ">=22.16.0"
+  },
+  "scripts": {
+    "build": "vite build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "glob": "^11.0.2",
+    "lodash-es": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.4"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false
+}
