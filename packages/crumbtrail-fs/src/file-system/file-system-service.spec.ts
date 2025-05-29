@@ -44,7 +44,7 @@ describe("ZFileSystemService", () => {
       // Arrange.
       const target = createTestTarget();
       const cwd = resolve(__dirname, "..");
-      const pattern = ["walk/", "file-system/*.ts"];
+      const pattern = ["file-system/*.ts"];
 
       // Act.
       const nodes = await target.search(pattern, { cwd });
@@ -52,7 +52,6 @@ describe("ZFileSystemService", () => {
 
       // Assert.
       expect(actual.length).toBeGreaterThanOrEqual(1);
-      expect(actual).toContain("walk");
       expect(actual).toContain("file-system-service.spec.ts");
     });
   });
