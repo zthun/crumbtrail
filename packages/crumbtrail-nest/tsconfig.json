@@ -1,0 +1,10 @@
+{
+  "extends": "../../.config/.tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@zthun/crumbtrail-fs": ["../crumbtrail-fs/src/index"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.mts"]
+}

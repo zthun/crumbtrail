@@ -1,0 +1,46 @@
+{
+  "name": "@zthun/crumbtrail-nest",
+  "version": "1.1.0",
+  "description": "A file system module for nest based projects built upon crumbtrail-fs",
+  "author": "Anthony Bonta",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zthun/crumbtrail",
+    "directory": "packages/crumbtrail-nest"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "require": "./dist/index.cjs",
+    "import": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "vite build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@zthun/crumbtrail-fs": "1.1.0"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^11.1.2",
+    "@nestjs/core": "^11.1.2",
+    "@nestjs/testing": "^11.1.2",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.4"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^11.1.2"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false
+}
