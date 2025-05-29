@@ -19,7 +19,7 @@
     "check": "tsc --noEmit",
     "build": "lerna run build",
     "make": "yarn clean && yarn lint && yarn check && yarn test && yarn build",
-    "prepare": "husky"
+    "postinstall": "husky"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
