@@ -1,0 +1,29 @@
+{
+  "name": "@zthun/crumbtrail-web",
+  "version": "1.0.0",
+  "description": "A documentation website for showing crumbtrail.",
+  "author": "Anthony Bonta",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zthun/crumbtrail",
+    "directory": "packages/crumbtrail-web"
+  },
+  "main": "./dist/main.js",
+  "scripts": {
+    "build": "typedoc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@zthun/crumbtrail-fs": "^1.0.0",
+    "typedoc": "^0.28.4",
+    "typescript": "~5.8.3"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false
+}
