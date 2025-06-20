@@ -5,15 +5,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [2.0.0](https://github.com/zthun/crumbtrail/compare/v1.1.0...v2.0.0) (2025-05-30)
 
-**Note:** Version bump only for package @zthun/crumbtrail-web
-
-
-
-
-
-## 1.1.0 (2025-05-29)
-
 
 ### Features
 
-* crumbtrail-web is the documentation website for crumbtrail ([49b866b](https://github.com/zthun/crumbtrail/commit/49b866bed0f90548f1428d9d1d92bfb6efe5622d))
+* crumbtrail-nest adds support to import file system services to nest ([7daeb9f](https://github.com/zthun/crumbtrail/commit/7daeb9f1cb04b882118e835344857def8f0d3932))
