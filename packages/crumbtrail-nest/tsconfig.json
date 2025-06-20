@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@zthun/crumbtrail-fs": ["../crumbtrail-fs/src/index"]
+      "@zthun/crumbtrail-fs": ["../crumbtrail-fs/src/index.mts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.mts"]

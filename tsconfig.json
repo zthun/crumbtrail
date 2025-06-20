@@ -4,8 +4,8 @@
     "baseUrl": "packages",
     "target": "esnext",
     "paths": {
-      "@zthun/crumbtrail-fs": ["crumbtrail-fs/src/index"],
-      "@zthun/crumbtrail-nest": ["crumbtrail-nest/src/index"]
+      "@zthun/crumbtrail-fs": ["crumbtrail-fs/src/index.mts"],
+      "@zthun/crumbtrail-nest": ["crumbtrail-nest/src/index.mts"]
     }
   },
   "include": ["**/*.ts", "**/*.mts"]
