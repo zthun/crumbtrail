@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/zthun/crumbtrail/compare/v2.0.0...v2.0.1) (2025-06-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* crumbtrail module strategy is now node next
+
+### Code Refactoring
+
+* crumbtrail module strategy is now node next ([bc31fdb](https://github.com/zthun/crumbtrail/commit/bc31fdbd8faaf29b1dd6c2f3bde5cba0ddccaae4))
+
+
+
 ## [2.0.0](https://github.com/zthun/crumbtrail/compare/v1.1.0...v2.0.0) (2025-05-30)
 
 
