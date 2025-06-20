@@ -25,9 +25,9 @@
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@types/lodash-es": "^4.17.12",
-    "@types/node": "^22.15.24",
+    "@types/node": "^24.0.3",
     "@types/supertest": "^6.0.3",
-    "@vitest/coverage-istanbul": "^3.1.4",
+    "@vitest/coverage-istanbul": "^3.2.4",
     "@zthun/lint-janitor": "^18.1.0",
     "@zthun/lint-janitor-config": "^18.1.0",
     "husky": "^9.1.7",
@@ -38,7 +38,10 @@
     "vite-plugin-dts": "^4.5.4",
     "vite-plugin-external": "^6.2.2",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.1.4"
+    "vitest": "^3.2.4"
+  },
+  "resolutions": {
+    "vite": "^6.0.0"
   },
   "packageManager": "yarn@4.9.1"
 }

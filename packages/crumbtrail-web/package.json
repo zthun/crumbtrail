@@ -20,7 +20,7 @@
   "devDependencies": {
     "@zthun/crumbtrail-fs": "^1.1.0",
     "@zthun/crumbtrail-nest": "^1.1.0",
-    "typedoc": "^0.28.4",
+    "typedoc": "^0.28.5",
     "typescript": "~5.8.3"
   },
   "files": [

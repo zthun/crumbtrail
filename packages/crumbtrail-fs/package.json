@@ -28,12 +28,12 @@
     "access": "public"
   },
   "dependencies": {
-    "glob": "^11.0.2",
+    "glob": "^11.0.3",
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {
     "vite": "^6.3.5",
-    "vitest": "^3.1.4"
+    "vitest": "^3.2.4"
   },
   "files": [
     "dist"
