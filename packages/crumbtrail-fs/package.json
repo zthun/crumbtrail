@@ -32,7 +32,7 @@
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {
-    "@zthun/janitor-build-config": "^19.2.4",
+    "@zthun/janitor-build-config": "^19.2.6",
     "vite": "^6.3.5",
     "vitest": "^3.2.4"
   },
