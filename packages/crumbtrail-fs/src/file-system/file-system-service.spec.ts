@@ -54,6 +54,20 @@ describe("ZFileSystemService", () => {
       expect(actual.length).toBeGreaterThanOrEqual(1);
       expect(actual).toContain("file-system-service.spec.ts");
     });
+
+    it("should not read any of the system information if the stat flag is false", async () => {
+      // Arrange.
+      const target = createTestTarget();
+      const cwd = resolve(__dirname, "..");
+      const pattern = ["file-system", "file-system/**"];
+
+      // Act.
+      const nodes = await target.search(pattern, { cwd, stat: false });
+      const actual = nodes.map((node) => node.size).filter((s) => !!s);
+
+      // Assert.
+      expect(actual).toEqual([]);
+    });
   });
 
   describe("Walk", () => {

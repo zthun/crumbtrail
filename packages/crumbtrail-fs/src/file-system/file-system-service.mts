@@ -15,6 +15,14 @@ export interface IZFileSystemSearchOptions {
    * If this is not set, then the cwd of the application is used.
    */
   cwd?: string;
+
+  /**
+   * A flag that determines whether or not to load the
+   * file system information.
+   *
+   * This is true by default.
+   */
+  stat?: boolean;
 }
 
 /**
@@ -132,8 +140,8 @@ export class ZFileSystemService implements IZFileSystemService {
     options?: IZFileSystemSearchOptions,
   ): Promise<IZFileSystemNode[]> {
     const paths = await glob(pattern, {
-      ...options,
       stat: true,
+      ...options,
       withFileTypes: true,
     });
 
@@ -145,7 +153,7 @@ export class ZFileSystemService implements IZFileSystemService {
         .size(path.size);
 
       // Note that for folders, node will return the size of the underlying OS metadata,
-      // hence, why we 0 out the size on a folder here.
+      // hence, why we remove the size on the folder here.
       info = path.isFile() ? info.file() : info.folder().size(undefined);
 
       return info.build();
