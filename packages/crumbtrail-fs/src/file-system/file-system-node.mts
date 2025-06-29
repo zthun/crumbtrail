@@ -78,6 +78,6 @@ export class ZFileSystemNodeBuilder {
 
   public build() {
     const clone = structuredClone(this._node);
-    return omitBy<IZFileSystemNode>(clone, isUndefined) as IZFileSystemNode;
+    return omitBy(clone, isUndefined) as IZFileSystemNode;
   }
 }
