@@ -1,6 +1,6 @@
 {
   "name": "@zthun/crumbtrail-fs",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "A better file system module for node",
   "author": "Anthony Bonta",
   "license": "MIT",
