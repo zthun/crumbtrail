@@ -31,10 +31,10 @@
     "@nestjs/common": "^11.1.6",
     "@nestjs/core": "^11.1.6",
     "@nestjs/testing": "^11.1.6",
-    "@zthun/janitor-build-config": "^19.3.4",
+    "@zthun/janitor-build-config": "^19.3.6",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
-    "vite": "^7.1.5",
+    "vite": "^7.1.9",
     "vitest": "^3.2.4"
   },
   "peerDependencies": {
