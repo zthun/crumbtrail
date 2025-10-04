@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.4](https://github.com/zthun/crumbtrail/compare/v2.1.3...v2.1.4) (2025-10-04)
+
+**Note:** Version bump only for package @zthun/crumbtrail
+
+
+
+
+
 ## [2.1.3](https://github.com/zthun/crumbtrail/compare/v2.1.2...v2.1.3) (2025-09-09)
 
 **Note:** Version bump only for package @zthun/crumbtrail
