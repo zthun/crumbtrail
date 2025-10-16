@@ -1,6 +1,11 @@
+import { watch, type FSWatcher } from "chokidar";
 import { flatten, uniqBy } from "lodash-es";
+import type { Stats } from "node:fs";
 import { cwd } from "node:process";
-import type { IZFileSystemNode } from "./file-system-node.mjs";
+import {
+  ZFileSystemNodeBuilder,
+  type IZFileSystemNode,
+} from "./file-system-node.mjs";
 import type { IZFileSystemService } from "./file-system-service.mjs";
 
 /**
@@ -14,10 +19,20 @@ export interface IZFileSystemRepositoryOptions {
    * from node.
    */
   path?: string;
+
   /**
    * Glob patterns of files to include in the retrieval.
+   *
+   * If this is falsy, then [**] will be used.
    */
   globs?: string[];
+
+  /**
+   * Do not watch the file system for changes.
+   *
+   * This keeps the internal state constant
+   */
+  ignore?: boolean;
 }
 
 /**
@@ -29,6 +44,7 @@ export interface IZFileSystemRepositoryOptions {
 export class ZFileSystemRepository {
   private _nodes: IZFileSystemNode[] = [];
   private _current: Promise<IZFileSystemNode[]>;
+  private _watcher: FSWatcher | null = null;
 
   /**
    * Initializes a new instance of this object.
@@ -43,7 +59,13 @@ export class ZFileSystemRepository {
     private readonly service: IZFileSystemService,
     options: IZFileSystemRepositoryOptions = {},
   ) {
-    const { path = cwd(), globs = ["**"] } = options;
+    const { path = cwd(), globs = ["**"], ignore } = options;
+
+    if (!ignore) {
+      this._watcher = watch(globs, { cwd: path, ignoreInitial: true });
+      this._watcher.on("add", this._onAddNode.bind(this));
+      this._watcher.on("addDir", this._onAddNode.bind(this));
+    }
 
     this._current = Promise.resolve()
       .then(() => {
@@ -56,12 +78,17 @@ export class ZFileSystemRepository {
         return Promise.all(searches);
       })
       .then((results) => {
-        return uniqBy(flatten(results), (n) => n.path);
-      })
-      .then((found) => {
-        this._nodes = found;
+        // We have to concat the existing nodes list in the case that a file
+        // was added while the search was happening
+        const discovered = flatten(results).concat(this._nodes);
+        this._nodes = uniqBy(discovered, (n) => n.path);
         return this._nodes;
       });
+  }
+
+  private _onAddNode(file: string, stat: Stats) {
+    const newFile = new ZFileSystemNodeBuilder().path(file).stats(stat).build();
+    this._nodes.push(newFile);
   }
 
   /**
@@ -79,6 +106,7 @@ export class ZFileSystemRepository {
    * destroyed, then this method does nothing.
    */
   public async destroy() {
+    await this._watcher?.close();
     await this.flush();
     this._nodes = [];
   }
