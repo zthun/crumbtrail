@@ -3711,8 +3711,10 @@ __metadata:
   dependencies:
     "@zthun/helpful-fn": "npm:^9.6.0"
     "@zthun/janitor-build-config": "npm:^19.3.6"
+    chokidar: "npm:^4.0.3"
     glob: "npm:^11.0.3"
     lodash-es: "npm:^4.17.21"
+    typescript: "npm:^5.9.3"
     vite: "npm:^7.1.10"
     vitest: "npm:^3.2.4"
     vitest-mock-extended: "npm:^3.1.0"
@@ -12453,7 +12455,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:~5.9.3":
+"typescript@npm:^5.9.3, typescript@npm:~5.9.3":
   version: 5.9.3
   resolution: "typescript@npm:5.9.3"
   bin:
@@ -12483,7 +12485,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A~5.9.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.9.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A~5.9.3#optional!builtin<compat/typescript>":
   version: 5.9.3
   resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
   bin:
