@@ -1,4 +1,5 @@
 import { isUndefined, omitBy } from "lodash-es";
+import type { Stats } from "node:fs";
 
 /**
  * Represents a type of a file system node.
@@ -75,6 +76,12 @@ export class ZFileSystemNodeBuilder {
 
   public file = this.type.bind(this, ZFileSystemNodeType.File);
   public folder = this.type.bind(this, ZFileSystemNodeType.Folder);
+
+  public stats(s: Stats) {
+    const builder = this.size(s.size).created(s.birthtime).updated(s.mtime);
+
+    return s.isFile() ? builder.file() : builder.folder();
+  }
 
   public build() {
     const clone = structuredClone(this._node);
