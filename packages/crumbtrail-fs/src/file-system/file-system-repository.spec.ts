@@ -2,15 +2,16 @@ import { createGuid, sleep } from "@zthun/helpful-fn";
 import { findIndex } from "lodash-es";
 import { mkdir, rm } from "node:fs/promises";
 import { resolve } from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeEach, describe, expect, it } from "vitest";
 import { ZStreamFile } from "../stream/stream-file.js";
 import type { IZFileSystemRepositoryOptions } from "./file-system-repository.mjs";
 import { ZFileSystemRepository } from "./file-system-repository.mjs";
 import { ZFileSystemService } from "./file-system-service.mjs";
 
-describe("ZFileSystemRepository", () => {
-  const assets = resolve(__dirname, "../../assets");
-  const files = [resolve(assets, "test.json"), resolve(assets, "test.xml")];
+describe.sequential("ZFileSystemRepository", () => {
+  const assets = resolve(__dirname, "../../.test");
+  const delay = 2500;
+  const writer = new ZStreamFile();
 
   let _target: ZFileSystemRepository | undefined;
 
@@ -20,11 +21,19 @@ describe("ZFileSystemRepository", () => {
     return _target;
   };
 
+  beforeEach(async () => {
+    await rm(assets, { recursive: true, force: true });
+  });
+
   afterEach(async () => {
     await _target?.destroy();
   });
 
-  describe("All files", () => {
+  afterAll(async () => {
+    await rm(assets, { recursive: true, force: true });
+  });
+
+  describe.sequential("All files", () => {
     it("should list all files in the current working directory", async () => {
       // Arrange.
       const target = createTestTarget();
@@ -38,25 +47,27 @@ describe("ZFileSystemRepository", () => {
 
     it("should list all files in the target directory", async () => {
       // Arrange.
+      const json = resolve(assets, `${createGuid()}.json`);
+      const xml = resolve(assets, createGuid(), `${createGuid()}.xml`);
+      await writer.write(json);
+      await writer.write(xml);
       const target = createTestTarget({
         path: assets,
-        globs: ["*.*"],
+        globs: ["**/*.*"],
         ignore: true,
       });
 
       // Act.
       const nodes = await target.list();
-      const actual = nodes.map((n) => n.path).sort();
+      const actual = nodes.map((n) => n.path);
 
       // Assert.
-      expect(actual).toEqual(files);
+      expect(actual).toContain(xml);
+      expect(actual).toContain(json);
     });
   });
 
   describe.sequential("Mutations", () => {
-    const delay = 2500;
-    const writer = new ZStreamFile();
-
     it("should add a file to the list when a file is added", async () => {
       // Arrange.
       const folder = resolve(assets, createGuid());
@@ -70,7 +81,6 @@ describe("ZFileSystemRepository", () => {
       await sleep(delay);
       const nodes = await target.list();
       const actual = findIndex(nodes, (n) => n.path === newFile);
-      await rm(folder, { recursive: true, force: true });
 
       // Assert.
       expect(actual).toBeGreaterThanOrEqual(0);
@@ -113,7 +123,7 @@ describe("ZFileSystemRepository", () => {
     });
   });
 
-  describe("Destroy", () => {
+  describe.sequential("Destroy", () => {
     it("should remove the list of nodes", async () => {
       // Arrange.
       const target = createTestTarget();
