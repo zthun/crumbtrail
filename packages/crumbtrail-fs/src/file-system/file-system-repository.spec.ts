@@ -1,6 +1,6 @@
 import { createGuid, sleep } from "@zthun/helpful-fn";
 import { findIndex } from "lodash-es";
-import { rm } from "node:fs/promises";
+import { mkdir, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { ZStreamFile } from "../stream/stream-file.js";
@@ -54,6 +54,7 @@ describe("ZFileSystemRepository", () => {
   });
 
   describe.sequential("Mutations", () => {
+    const delay = 2500;
     const writer = new ZStreamFile();
 
     it("should add a file to the list when a file is added", async () => {
@@ -66,7 +67,7 @@ describe("ZFileSystemRepository", () => {
 
       // Act.
       await writer.write(newFile, Buffer.from(contents));
-      await sleep(1000);
+      await sleep(delay);
       const nodes = await target.list();
       const actual = findIndex(nodes, (n) => n.path === newFile);
       await rm(folder, { recursive: true, force: true });
@@ -85,13 +86,30 @@ describe("ZFileSystemRepository", () => {
 
       // Act.
       await writer.write(newFile, Buffer.from(contents));
-      await sleep(1000);
+      await sleep(delay);
       const nodes = await target.list();
       const actual = findIndex(nodes, (n) => n.path === newFile);
       await rm(folder, { recursive: true, force: true });
 
       // Assert.
       expect(actual).toBeLessThan(0);
+    });
+
+    it("should add a folder to the list when a folder is added and matches the glob pattern", async () => {
+      // Arrange.
+      const folder = resolve(assets, createGuid());
+      const target = createTestTarget({ path: assets, globs: ["**"] });
+      await target.flush();
+
+      // Act.
+      await mkdir(folder, { recursive: true });
+      await sleep(delay);
+      const nodes = await target.list();
+      const actual = findIndex(nodes, (n) => n.path === folder);
+      await rm(folder, { recursive: true, force: true });
+
+      // Assert.
+      expect(actual).toBeGreaterThanOrEqual(0);
     });
   });
 
