@@ -3714,6 +3714,7 @@ __metadata:
     chokidar: "npm:^4.0.3"
     glob: "npm:^11.0.3"
     lodash-es: "npm:^4.17.21"
+    minimatch: "npm:^10.0.3"
     typescript: "npm:^5.9.3"
     vite: "npm:^7.1.10"
     vitest: "npm:^3.2.4"
