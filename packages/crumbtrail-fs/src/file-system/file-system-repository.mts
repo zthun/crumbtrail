@@ -1,6 +1,7 @@
 import { watch, type FSWatcher } from "chokidar";
 import { flatten, uniqBy } from "lodash-es";
-import type { Stats } from "node:fs";
+import { minimatch } from "minimatch";
+import { resolve } from "node:path";
 import { cwd } from "node:process";
 import {
   ZFileSystemNodeBuilder,
@@ -28,9 +29,7 @@ export interface IZFileSystemRepositoryOptions {
   globs?: string[];
 
   /**
-   * Do not watch the file system for changes.
-   *
-   * This keeps the internal state constant
+   * Do not watch the file system.  Just scan once and keep it that way.
    */
   ignore?: boolean;
 }
@@ -43,7 +42,7 @@ export interface IZFileSystemRepositoryOptions {
  */
 export class ZFileSystemRepository {
   private _nodes: IZFileSystemNode[] = [];
-  private _current: Promise<IZFileSystemNode[]>;
+  private _current: Promise<IZFileSystemNode[]> = Promise.resolve([]);
   private _watcher: FSWatcher | null = null;
 
   /**
@@ -62,9 +61,17 @@ export class ZFileSystemRepository {
     const { path = cwd(), globs = ["**"], ignore } = options;
 
     if (!ignore) {
-      this._watcher = watch(globs, { cwd: path, ignoreInitial: true });
-      this._watcher.on("add", this._onAddNode.bind(this));
-      this._watcher.on("addDir", this._onAddNode.bind(this));
+      this._watcher = watch(path, { ignoreInitial: true });
+
+      const onAddNode = (target: string) => {
+        if (globs.some((g) => minimatch(target, resolve(path, g)))) {
+          const newFile = new ZFileSystemNodeBuilder().path(target).build();
+          this._nodes.push(newFile);
+        }
+      };
+
+      this._watcher.on("add", onAddNode);
+      this._watcher.on("addDir", onAddNode);
     }
 
     this._current = Promise.resolve()
@@ -84,11 +91,6 @@ export class ZFileSystemRepository {
         this._nodes = uniqBy(discovered, (n) => n.path);
         return this._nodes;
       });
-  }
-
-  private _onAddNode(file: string, stat: Stats) {
-    const newFile = new ZFileSystemNodeBuilder().path(file).stats(stat).build();
-    this._nodes.push(newFile);
   }
 
   /**

@@ -1,4 +1,4 @@
-import { sleep } from "@zthun/helpful-fn";
+import { createGuid, sleep } from "@zthun/helpful-fn";
 import { findIndex } from "lodash-es";
 import { rm } from "node:fs/promises";
 import { resolve } from "node:path";
@@ -54,15 +54,14 @@ describe("ZFileSystemRepository", () => {
   });
 
   describe.sequential("Mutations", () => {
+    const writer = new ZStreamFile();
+
     it("should add a file to the list when a file is added", async () => {
       // Arrange.
-      const writer = new ZStreamFile();
-      const folder = resolve(assets, "temp");
-      const newFile = resolve(folder, "_tmp.json");
+      const folder = resolve(assets, createGuid());
+      const newFile = resolve(folder, `${createGuid()}.json`);
       const contents = "File Contents";
-      const target = createTestTarget({
-        path: assets,
-      });
+      const target = createTestTarget({ path: assets, globs: ["**/*.*"] });
       await target.flush();
 
       // Act.
@@ -74,6 +73,25 @@ describe("ZFileSystemRepository", () => {
 
       // Assert.
       expect(actual).toBeGreaterThanOrEqual(0);
+    });
+
+    it("should not add a file to the list when the file does not match the glob pattern", async () => {
+      // Arrange.
+      const folder = resolve(assets, createGuid());
+      const newFile = resolve(folder, `${createGuid()}.json`);
+      const contents = "File Contents";
+      const target = createTestTarget({ path: assets, globs: ["**/*.xml"] });
+      await target.flush();
+
+      // Act.
+      await writer.write(newFile, Buffer.from(contents));
+      await sleep(1000);
+      const nodes = await target.list();
+      const actual = findIndex(nodes, (n) => n.path === newFile);
+      await rm(folder, { recursive: true, force: true });
+
+      // Assert.
+      expect(actual).toBeLessThan(0);
     });
   });
 
