@@ -1,5 +1,4 @@
 import { createGuid, sleep } from "@zthun/helpful-fn";
-import { findIndex } from "lodash-es";
 import { mkdir, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { afterAll, afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -73,17 +72,17 @@ describe.sequential("ZFileSystemRepository", () => {
       const folder = resolve(assets, createGuid());
       const newFile = resolve(folder, `${createGuid()}.json`);
       const contents = "File Contents";
-      const target = createTestTarget({ path: assets, globs: ["**/*.*"] });
+      const target = createTestTarget({ path: assets, globs: [newFile] });
       await target.flush();
 
       // Act.
       await writer.write(newFile, Buffer.from(contents));
       await sleep(delay);
       const nodes = await target.list();
-      const actual = findIndex(nodes, (n) => n.path === newFile);
+      const [actual] = nodes;
 
       // Assert.
-      expect(actual).toBeGreaterThanOrEqual(0);
+      expect(actual?.path).toEqual(newFile);
     });
 
     it("should not add a file to the list when the file does not match the glob pattern", async () => {
@@ -97,12 +96,10 @@ describe.sequential("ZFileSystemRepository", () => {
       // Act.
       await writer.write(newFile, Buffer.from(contents));
       await sleep(delay);
-      const nodes = await target.list();
-      const actual = findIndex(nodes, (n) => n.path === newFile);
-      await rm(folder, { recursive: true, force: true });
+      const actual = await target.list();
 
       // Assert.
-      expect(actual).toBeLessThan(0);
+      expect(actual.length).toEqual(0);
     });
 
     it("should add a folder to the list when a folder is added and matches the glob pattern", async () => {
@@ -115,11 +112,10 @@ describe.sequential("ZFileSystemRepository", () => {
       await mkdir(folder, { recursive: true });
       await sleep(delay);
       const nodes = await target.list();
-      const actual = findIndex(nodes, (n) => n.path === folder);
-      await rm(folder, { recursive: true, force: true });
+      const [actual] = nodes;
 
       // Assert.
-      expect(actual).toBeGreaterThanOrEqual(0);
+      expect(actual?.path).toEqual(folder);
     });
   });
 
