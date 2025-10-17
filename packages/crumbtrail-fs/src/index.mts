@@ -4,3 +4,4 @@ export * from "./file-system/file-system-service.mjs";
 export * from "./resolve-path-like/resolve-path-like.js";
 export * from "./stream/stream-file.mjs";
 export * from "./stream/stream-write.mjs";
+export * from "./watch/file-watch.mjs";
