@@ -42,7 +42,7 @@ describe.sequential("ZFileWatch", () => {
       _subscriptions.push(target.add().subscribe(onAdd));
 
       // Act.
-      await writer.write(file, Buffer.from("Contents"));
+      await writer.write(file, { buffer: Buffer.from("Contents") });
       await sleep(delay);
 
       // Assert.
@@ -81,12 +81,12 @@ describe.sequential("ZFileWatch", () => {
       // Arrange.
       const onUpdate = vi.fn();
       const file = resolve(assets, `${randomUUID()}.json`);
-      await writer.write(file, Buffer.from("Old"));
+      await writer.write(file, { buffer: Buffer.from("Old") });
       const target = await createTestTarget();
       _subscriptions.push(target.update().subscribe(onUpdate));
 
       // Act.
-      await writer.write(file, Buffer.from("New"));
+      await writer.write(file, { buffer: Buffer.from("New") });
       await sleep(delay);
 
       // Assert.
@@ -99,12 +99,12 @@ describe.sequential("ZFileWatch", () => {
       // Arrange.
       const onUpdate = vi.fn();
       const file = resolve(assets, `${randomUUID()}.json`);
-      await writer.write(file, Buffer.from("Old"));
+      await writer.write(file, { buffer: Buffer.from("Old") });
       const target = await createTestTarget(file);
       _subscriptions.push(target.update().subscribe(onUpdate));
 
       // Act.
-      await writer.write(file, Buffer.from("New"));
+      await writer.write(file, { buffer: Buffer.from("New") });
       await sleep(delay);
 
       // Assert.
