@@ -6,6 +6,7 @@ reports
 .rpt2_cache
 .certificates
 .test
+.test.*
 
 # Secrets
 .secrets

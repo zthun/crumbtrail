@@ -8,7 +8,7 @@ import { ZFileSystemRepository } from "./file-system-repository.mjs";
 import { ZFileSystemService } from "./file-system-service.mjs";
 
 describe.sequential("ZFileSystemRepository", () => {
-  const assets = resolve(__dirname, "../../.test");
+  const assets = resolve(__dirname, "../../.test.file-system-repository");
   const writer = new ZStreamFile();
 
   let _target: ZFileSystemRepository | undefined;
