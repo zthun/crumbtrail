@@ -27,11 +27,6 @@ export interface IZFileSystemRepositoryOptions {
    * If this is falsy, then [**] will be used.
    */
   globs?: string[];
-
-  /**
-   * Do not watch the file system.  Just scan once and keep it that way.
-   */
-  ignore?: boolean;
 }
 
 /**
@@ -58,21 +53,22 @@ export class ZFileSystemRepository {
     private readonly service: IZFileSystemService,
     options: IZFileSystemRepositoryOptions = {},
   ) {
-    const { path = cwd(), globs = ["**"], ignore } = options;
+    const { path = cwd(), globs = ["**"] } = options;
 
-    if (!ignore) {
-      this._watcher = watch(path, { ignoreInitial: true });
+    this._watcher = watch(path, {
+      ignoreInitial: true,
+      awaitWriteFinish: false,
+    });
 
-      const onAddNode = (target: string) => {
-        if (globs.some((g) => minimatch(target, resolve(path, g)))) {
-          const newFile = new ZFileSystemNodeBuilder().path(target).build();
-          this._nodes.push(newFile);
-        }
-      };
+    const onAddNode = (target: string) => {
+      if (globs.some((g) => minimatch(target, resolve(path, g)))) {
+        const newFile = new ZFileSystemNodeBuilder().path(target).build();
+        this._nodes.push(newFile);
+      }
+    };
 
-      this._watcher.on("add", onAddNode);
-      this._watcher.on("addDir", onAddNode);
-    }
+    this._watcher.on("add", onAddNode);
+    this._watcher.on("addDir", onAddNode);
 
     this._current = Promise.resolve()
       .then(() => {

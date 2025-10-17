@@ -53,7 +53,6 @@ describe.sequential("ZFileSystemRepository", () => {
       const target = createTestTarget({
         path: assets,
         globs: ["**/*.*"],
-        ignore: true,
       });
 
       // Act.
