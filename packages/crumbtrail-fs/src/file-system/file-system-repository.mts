@@ -24,7 +24,12 @@ export interface IZFileSystemRepositoryOptions {
 }
 
 /**
- * Represents a cache system for a file system to quickly retrieve files and folders.
+ * Represents a cache for a file system to quickly retrieve files and folders
+ * into memory.
+ *
+ * The use of this is for file system heavy operations where you don't want
+ * to continuously read the file system over and over again.  This pulls
+ * all files and folders in a directory into memory.
  */
 export class ZFileSystemRepository {
   private _nodes: IZFileSystemNode[] = [];
