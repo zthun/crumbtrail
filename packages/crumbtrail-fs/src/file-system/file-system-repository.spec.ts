@@ -1,5 +1,5 @@
-import { createGuid, sleep } from "@zthun/helpful-fn";
-import { mkdir, rm } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import { rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { afterAll, afterEach, beforeEach, describe, expect, it } from "vitest";
 import { ZStreamFile } from "../stream/stream-file.mjs";
@@ -9,7 +9,6 @@ import { ZFileSystemService } from "./file-system-service.mjs";
 
 describe.sequential("ZFileSystemRepository", () => {
   const assets = resolve(__dirname, "../../.test");
-  const delay = 2500;
   const writer = new ZStreamFile();
 
   let _target: ZFileSystemRepository | undefined;
@@ -46,8 +45,8 @@ describe.sequential("ZFileSystemRepository", () => {
 
     it("should list all files in the target directory", async () => {
       // Arrange.
-      const json = resolve(assets, `${createGuid()}.json`);
-      const xml = resolve(assets, createGuid(), `${createGuid()}.xml`);
+      const json = resolve(assets, `${randomUUID()}.json`);
+      const xml = resolve(assets, randomUUID(), `${randomUUID()}.xml`);
       await writer.write(json);
       await writer.write(xml);
       const target = createTestTarget({
@@ -62,59 +61,6 @@ describe.sequential("ZFileSystemRepository", () => {
       // Assert.
       expect(actual).toContain(xml);
       expect(actual).toContain(json);
-    });
-  });
-
-  describe.sequential("Mutations", () => {
-    it("should add a file to the list when a file is added", async () => {
-      // Arrange.
-      const folder = resolve(assets, createGuid());
-      const newFile = resolve(folder, `${createGuid()}.json`);
-      const contents = "File Contents";
-      const target = createTestTarget({ path: assets, globs: [newFile] });
-      await target.flush();
-
-      // Act.
-      await writer.write(newFile, Buffer.from(contents));
-      await sleep(delay);
-      const nodes = await target.list();
-      const [actual] = nodes;
-
-      // Assert.
-      expect(actual?.path).toEqual(newFile);
-    });
-
-    it("should not add a file to the list when the file does not match the glob pattern", async () => {
-      // Arrange.
-      const folder = resolve(assets, createGuid());
-      const newFile = resolve(folder, `${createGuid()}.json`);
-      const contents = "File Contents";
-      const target = createTestTarget({ path: assets, globs: ["**/*.xml"] });
-      await target.flush();
-
-      // Act.
-      await writer.write(newFile, Buffer.from(contents));
-      await sleep(delay);
-      const actual = await target.list();
-
-      // Assert.
-      expect(actual.length).toEqual(0);
-    });
-
-    it("should add a folder to the list when a folder is added and matches the glob pattern", async () => {
-      // Arrange.
-      const folder = resolve(assets, createGuid());
-      const target = createTestTarget({ path: assets, globs: ["**"] });
-      await target.flush();
-
-      // Act.
-      await mkdir(folder, { recursive: true });
-      await sleep(delay);
-      const nodes = await target.list();
-      const [actual] = nodes;
-
-      // Assert.
-      expect(actual?.path).toEqual(folder);
     });
   });
 

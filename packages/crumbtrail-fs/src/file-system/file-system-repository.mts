@@ -1,12 +1,6 @@
-import { watch, type FSWatcher } from "chokidar";
 import { flatten, uniqBy } from "lodash-es";
-import { minimatch } from "minimatch";
-import { resolve } from "node:path";
 import { cwd } from "node:process";
-import {
-  ZFileSystemNodeBuilder,
-  type IZFileSystemNode,
-} from "./file-system-node.mjs";
+import { type IZFileSystemNode } from "./file-system-node.mjs";
 import type { IZFileSystemService } from "./file-system-service.mjs";
 
 /**
@@ -31,14 +25,10 @@ export interface IZFileSystemRepositoryOptions {
 
 /**
  * Represents a cache system for a file system to quickly retrieve files and folders.
- *
- * This class watches the file system and updates itself internally when it detects changes.
- * This is built on top of a file system service and a file system watcher.
  */
 export class ZFileSystemRepository {
   private _nodes: IZFileSystemNode[] = [];
   private _current: Promise<IZFileSystemNode[]> = Promise.resolve([]);
-  private _watcher: FSWatcher | null = null;
 
   /**
    * Initializes a new instance of this object.
@@ -54,21 +44,6 @@ export class ZFileSystemRepository {
     options: IZFileSystemRepositoryOptions = {},
   ) {
     const { path = cwd(), globs = ["**"] } = options;
-
-    this._watcher = watch(path, {
-      ignoreInitial: true,
-      awaitWriteFinish: false,
-    });
-
-    const onAddNode = (target: string) => {
-      if (globs.some((g) => minimatch(target, resolve(path, g)))) {
-        const newFile = new ZFileSystemNodeBuilder().path(target).build();
-        this._nodes.push(newFile);
-      }
-    };
-
-    this._watcher.on("add", onAddNode);
-    this._watcher.on("addDir", onAddNode);
 
     this._current = Promise.resolve()
       .then(() => {
@@ -99,12 +74,11 @@ export class ZFileSystemRepository {
   /**
    * Destroys this repository.
    *
-   * Cancels any watch jobs and sets the node list to empty.
-   * This method is idempotent.  If this object is already
-   * destroyed, then this method does nothing.
+   * Sets the node list to empty. This method is idempotent.
+   * If this object is already destroyed, then this method
+   * does nothing.
    */
   public async destroy() {
-    await this._watcher?.close();
     await this.flush();
     this._nodes = [];
   }
