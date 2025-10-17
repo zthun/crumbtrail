@@ -2,7 +2,7 @@ import type { PathLike } from "fs";
 import { mkdir, writeFile } from "fs/promises";
 import { dirname } from "path";
 import { resolvePathLike } from "../resolve-path-like/resolve-path-like.js";
-import type { IZStreamWrite } from "./stream-write.js";
+import type { IZStreamWrite } from "./stream-write.mjs";
 
 /**
  * A stream that can read and write a file.

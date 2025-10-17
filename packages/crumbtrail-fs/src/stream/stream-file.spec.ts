@@ -2,7 +2,7 @@ import { createGuid } from "@zthun/helpful-fn";
 import { readFile, rm, unlink } from "node:fs/promises";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import { ZStreamFile } from "./stream-file.js";
+import { ZStreamFile } from "./stream-file.mjs";
 
 describe.sequential("ZStreamWriteFile", () => {
   const assets = resolve(__dirname, "../../assets");

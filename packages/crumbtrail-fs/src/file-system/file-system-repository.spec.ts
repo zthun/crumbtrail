@@ -2,7 +2,7 @@ import { createGuid, sleep } from "@zthun/helpful-fn";
 import { mkdir, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { afterAll, afterEach, beforeEach, describe, expect, it } from "vitest";
-import { ZStreamFile } from "../stream/stream-file.js";
+import { ZStreamFile } from "../stream/stream-file.mjs";
 import type { IZFileSystemRepositoryOptions } from "./file-system-repository.mjs";
 import { ZFileSystemRepository } from "./file-system-repository.mjs";
 import { ZFileSystemService } from "./file-system-service.mjs";
