@@ -1,4 +1,6 @@
-import { describe, expect, it } from "vitest";
+import type { Stats } from "node:fs";
+import { stat } from "node:fs/promises";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   ZFileSystemNodeBuilder,
   ZFileSystemNodeType,
@@ -84,6 +86,68 @@ describe("ZFileSystemNode", () => {
       expect(createTestTarget().folder().file().build().type).toEqual(
         ZFileSystemNodeType.File,
       );
+    });
+  });
+
+  describe("Stats", () => {
+    let file: Stats;
+    let folder: Stats;
+
+    beforeEach(async () => {
+      file = await stat(__filename);
+      folder = await stat(__dirname);
+    });
+
+    describe("File", () => {
+      it("should set the file size", () => {
+        expect(createTestTarget().stats(file).build().size).toEqual(
+          BigInt(file.size),
+        );
+      });
+
+      it("should set the created date", () => {
+        expect(createTestTarget().stats(file).build().created).toEqual(
+          file.birthtime.toJSON(),
+        );
+      });
+
+      it("should set the updated date", () => {
+        expect(createTestTarget().stats(file).build().updated).toEqual(
+          file.mtime.toJSON(),
+        );
+      });
+
+      it("should set the type to file", () => {
+        expect(createTestTarget().stats(file).build().type).toEqual(
+          ZFileSystemNodeType.File,
+        );
+      });
+    });
+
+    describe("Folder", () => {
+      it("should set the file size", () => {
+        expect(createTestTarget().stats(folder).build().size).toEqual(
+          BigInt(folder.size),
+        );
+      });
+
+      it("should set the created date", () => {
+        expect(createTestTarget().stats(folder).build().created).toEqual(
+          folder.birthtime.toJSON(),
+        );
+      });
+
+      it("should set the updated date", () => {
+        expect(createTestTarget().stats(folder).build().updated).toEqual(
+          folder.mtime.toJSON(),
+        );
+      });
+
+      it("should set the type to folder", () => {
+        expect(createTestTarget().stats(folder).build().type).toEqual(
+          ZFileSystemNodeType.Folder,
+        );
+      });
     });
   });
 });
