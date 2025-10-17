@@ -1,4 +1,4 @@
-import { createGuid } from "@zthun/helpful-fn";
+import { randomUUID } from "node:crypto";
 import { readFile, rm, unlink } from "node:fs/promises";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -11,7 +11,7 @@ describe.sequential("ZStreamWriteFile", () => {
 
   it("should create the file if not writing any data", async () => {
     // Arrange
-    const file = resolve(assets, `${createGuid()}.json`);
+    const file = resolve(assets, `${randomUUID()}.json`);
     const target = createTestTarget();
 
     // Act.
@@ -24,7 +24,7 @@ describe.sequential("ZStreamWriteFile", () => {
   it("should create the file and write the contents", async () => {
     // Arrange.
     const contents = "Should be written to the file";
-    const file = resolve(assets, `${createGuid()}.json`);
+    const file = resolve(assets, `${randomUUID()}.json`);
     const target = createTestTarget();
 
     // Act.
@@ -40,7 +40,7 @@ describe.sequential("ZStreamWriteFile", () => {
   it("should update the contents of an existing file", async () => {
     // Arrange.
     const contents = "Should be written to existing file";
-    const file = resolve(assets, `${createGuid()}.json`);
+    const file = resolve(assets, `${randomUUID()}.json`);
     const target = createTestTarget();
 
     // Act.
@@ -56,9 +56,9 @@ describe.sequential("ZStreamWriteFile", () => {
 
   it("should write the file and create the directory if it does not exist", async () => {
     // Arrange.
-    const name = `${createGuid()}.json`;
-    const folder = resolve(assets, createGuid());
-    const file = resolve(folder, createGuid(), name);
+    const name = `${randomUUID()}.json`;
+    const folder = resolve(assets, randomUUID());
+    const file = resolve(folder, randomUUID(), name);
     const target = createTestTarget();
 
     // Act.
