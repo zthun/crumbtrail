@@ -28,7 +28,7 @@ describe.sequential("ZStreamWriteFile", () => {
     const target = createTestTarget();
 
     // Act.
-    await target.write(file, Buffer.from(contents));
+    await target.write(file, { buffer: Buffer.from(contents) });
     const buffer = await readFile(file);
     const actual = buffer.toString();
 
@@ -45,7 +45,7 @@ describe.sequential("ZStreamWriteFile", () => {
 
     // Act.
     await target.write(file);
-    await target.write(file, Buffer.from(contents));
+    await target.write(file, { buffer: Buffer.from(contents) });
     const buffer = await readFile(file);
     const actual = buffer.toString();
 
