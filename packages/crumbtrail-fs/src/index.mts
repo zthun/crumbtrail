@@ -1,4 +1,3 @@
-export * from "./file-repository/file-repository.mjs";
 export * from "./file-system/file-system-node.mjs";
 export * from "./file-system/file-system-service.mjs";
 export * from "./file-watch/file-watch.mjs";

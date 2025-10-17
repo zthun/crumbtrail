@@ -37,12 +37,6 @@ export class ZFileRepository {
 
   /**
    * Initializes a new instance of this object.
-   *
-   * @param _directory -
-   *        The directory to cache.
-   *
-   * @param _search -
-   *        The search glob pattern to match and cache.
    */
   public constructor(
     private readonly service: IZFileSystemService,
