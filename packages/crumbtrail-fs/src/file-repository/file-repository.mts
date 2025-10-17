@@ -1,12 +1,12 @@
 import { flatten, uniqBy } from "lodash-es";
 import { cwd } from "node:process";
-import { type IZFileSystemNode } from "./file-system-node.mjs";
-import type { IZFileSystemService } from "./file-system-service.mjs";
+import type { IZFileSystemNode } from "../file-system/file-system-node.mjs";
+import type { IZFileSystemService } from "../file-system/file-system-service.mjs";
 
 /**
  * Options for watching and retrieving files from the file system.
  */
-export interface IZFileSystemRepositoryOptions {
+export interface IZFileRepositoryOptions {
   /**
    * The path to watch.
    *
@@ -31,7 +31,7 @@ export interface IZFileSystemRepositoryOptions {
  * to continuously read the file system over and over again.  This pulls
  * all files and folders in a directory into memory.
  */
-export class ZFileSystemRepository {
+export class ZFileRepository {
   private _nodes: IZFileSystemNode[] = [];
   private _current: Promise<IZFileSystemNode[]> = Promise.resolve([]);
 
@@ -46,7 +46,7 @@ export class ZFileSystemRepository {
    */
   public constructor(
     private readonly service: IZFileSystemService,
-    options: IZFileSystemRepositoryOptions = {},
+    options: IZFileRepositoryOptions = {},
   ) {
     const { path = cwd(), globs = ["**"] } = options;
 

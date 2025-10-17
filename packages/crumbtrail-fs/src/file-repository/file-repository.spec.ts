@@ -2,19 +2,19 @@ import { randomUUID } from "node:crypto";
 import { rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { afterAll, afterEach, beforeEach, describe, expect, it } from "vitest";
+import { ZFileSystemService } from "../file-system/file-system-service.mjs";
 import { ZStreamFile } from "../stream/stream-file.mjs";
-import type { IZFileSystemRepositoryOptions } from "./file-system-repository.mjs";
-import { ZFileSystemRepository } from "./file-system-repository.mjs";
-import { ZFileSystemService } from "./file-system-service.mjs";
+import type { IZFileRepositoryOptions } from "./file-repository.mjs";
+import { ZFileRepository } from "./file-repository.mjs";
 
 describe.sequential("ZFileSystemRepository", () => {
   const assets = resolve(__dirname, "../../.test.file-system-repository");
   const writer = new ZStreamFile();
 
-  let _target: ZFileSystemRepository | undefined;
+  let _target: ZFileRepository | undefined;
 
-  const createTestTarget = (options?: IZFileSystemRepositoryOptions) => {
-    _target = new ZFileSystemRepository(new ZFileSystemService(), options);
+  const createTestTarget = (options?: IZFileRepositoryOptions) => {
+    _target = new ZFileRepository(new ZFileSystemService(), options);
 
     return _target;
   };
