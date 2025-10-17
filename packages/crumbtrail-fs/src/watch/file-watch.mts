@@ -1,8 +1,13 @@
 import type { FSWatcher } from "chokidar";
 import { watch } from "chokidar";
+import type { Stats } from "node:fs";
 import { resolve } from "node:path";
 import type { Observable } from "rxjs";
 import { Subject } from "rxjs";
+import {
+  ZFileSystemNodeBuilder,
+  type IZFileSystemNode,
+} from "../file-system/file-system-node.mjs";
 
 /**
  * Represents and object that can watch a folder or file on the file system.
@@ -18,7 +23,7 @@ export interface IZFileWatch {
    *        The observable that will publish files that
    *        get added.
    */
-  add(): Observable<string>;
+  add(): Observable<IZFileSystemNode>;
 
   /**
    * The stream for files being updated.
@@ -32,7 +37,7 @@ export interface IZFileWatch {
    *        The observable that will publish files and folders
    *        that are updated.
    */
-  update(): Observable<string>;
+  update(): Observable<IZFileSystemNode>;
 
   /**
    * The stream for files and folders being deleted.
@@ -44,18 +49,20 @@ export interface IZFileWatch {
    *
    * @returns
    *        The observable that will publish file and folders
-   *        that are unlinked and removed respectively.
+   *        that are unlinked and removed respectively.  Note
+   *        that files and folders streamed this way will not
+   *        have their stats set.
    */
-  remove(): Observable<string>;
+  remove(): Observable<IZFileSystemNode>;
 }
 
 /**
  * An implementation of the IZFileWatch using basic node apis.
  */
 export class ZFileWatch implements IZFileWatch {
-  private _add: Subject<string> = new Subject<string>();
-  private _update: Subject<string> = new Subject<string>();
-  private _remove: Subject<string> = new Subject<string>();
+  private _add: Subject<IZFileSystemNode> = new Subject<IZFileSystemNode>();
+  private _update: Subject<IZFileSystemNode> = new Subject<IZFileSystemNode>();
+  private _remove: Subject<IZFileSystemNode> = new Subject<IZFileSystemNode>();
   private _watcher: FSWatcher | undefined;
 
   /**
@@ -67,33 +74,34 @@ export class ZFileWatch implements IZFileWatch {
   public constructor(public readonly path: string) {}
 
   public async start() {
+    await this.stop();
+
     this._watcher = watch(this.path, {
       usePolling: true,
       alwaysStat: true,
       ignoreInitial: true,
-      ignorePermissionErrors: true,
+
       awaitWriteFinish: {
         stabilityThreshold: 500,
         pollInterval: 50,
       },
     });
 
+    function next(
+      observable: Subject<IZFileSystemNode>,
+      file: string,
+      stats: Stats | undefined,
+    ) {
+      const node = new ZFileSystemNodeBuilder().path(resolve(this.path, file));
+      observable.next(stats ? node.stats(stats).build() : node.build());
+    }
+
     this._watcher
-      .on("add", (f) => {
-        this._add.next(resolve(this.path, f));
-      })
-      .on("addDir", (f) => {
-        this._add.next(resolve(this.path, f));
-      })
-      .on("change", (f) => {
-        this._update.next(resolve(this.path, f));
-      })
-      .on("unlink", (f) => {
-        this._remove.next(resolve(this.path, f));
-      })
-      .on("unlinkDir", (f) => {
-        this._remove.next(resolve(this.path, f));
-      });
+      .on("add", next.bind(this, this._add))
+      .on("addDir", next.bind(this, this._add))
+      .on("change", next.bind(this, this._update))
+      .on("unlink", next.bind(this, this._remove))
+      .on("unlinkDir", next.bind(this, this._remove));
 
     return new Promise<void>((resolve) =>
       this._watcher?.on("ready", () => resolve()),

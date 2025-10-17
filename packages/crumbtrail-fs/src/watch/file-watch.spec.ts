@@ -4,13 +4,14 @@ import { mkdir, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import type { Subscription } from "rxjs";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { ZFileSystemNodeType } from "../file-system/file-system-node.mjs";
 import { ZStreamFile } from "../stream/stream-file.mjs";
 import { ZFileWatch } from "./file-watch.mjs";
 
 describe.sequential("ZFileWatch", () => {
   const assets = resolve(__dirname, "../../.test.file-watch");
   const writer = new ZStreamFile();
-  const delay = 1500;
+  const delay = 1000;
   const _subscriptions: Subscription[] = [];
   let _target: ZFileWatch;
 
@@ -36,7 +37,7 @@ describe.sequential("ZFileWatch", () => {
       // Arrange.
       const file = resolve(assets, `${randomUUID()}.json`);
       const onAdd = vi.fn();
-      await mkdir(assets);
+      await mkdir(assets, { recursive: true });
       const target = await createTestTarget();
       _subscriptions.push(target.add().subscribe(onAdd));
 
@@ -45,7 +46,30 @@ describe.sequential("ZFileWatch", () => {
       await sleep(delay);
 
       // Assert.
-      expect(onAdd).toHaveBeenCalledWith(file);
+      expect(onAdd).toHaveBeenCalledWith(
+        expect.objectContaining({ path: file, type: ZFileSystemNodeType.File }),
+      );
+    });
+
+    it("should stream the absolute path when a new folder is created", async () => {
+      // Arrange.
+      const folder = resolve(assets, `${randomUUID()}.json`);
+      const onAdd = vi.fn();
+      await mkdir(assets, { recursive: true });
+      const target = await createTestTarget();
+      _subscriptions.push(target.add().subscribe(onAdd));
+
+      // Act.
+      await mkdir(folder);
+      await sleep(delay);
+
+      // Assert.
+      expect(onAdd).toHaveBeenCalledWith(
+        expect.objectContaining({
+          path: folder,
+          type: ZFileSystemNodeType.Folder,
+        }),
+      );
     });
   });
 
@@ -63,7 +87,9 @@ describe.sequential("ZFileWatch", () => {
       await sleep(delay);
 
       // Assert.
-      expect(onUpdate).toHaveBeenCalledWith(file);
+      expect(onUpdate).toHaveBeenCalledWith(
+        expect.objectContaining({ path: file, type: ZFileSystemNodeType.File }),
+      );
     });
 
     it("should stream the absolute path of the given path if the path itself changes", async () => {
@@ -79,7 +105,9 @@ describe.sequential("ZFileWatch", () => {
       await sleep(delay);
 
       // Assert.
-      expect(onUpdate).toHaveBeenCalledWith(file);
+      expect(onUpdate).toHaveBeenCalledWith(
+        expect.objectContaining({ path: file, type: ZFileSystemNodeType.File }),
+      );
     });
   });
 
@@ -97,7 +125,27 @@ describe.sequential("ZFileWatch", () => {
       await sleep(delay);
 
       // Assert.
-      expect(onRemove).toHaveBeenCalledWith(file);
+      expect(onRemove).toHaveBeenCalledWith(
+        expect.objectContaining({ path: file }),
+      );
+    });
+
+    it("should stream the absolute path of a folder when it is removed", async () => {
+      // Arrange.
+      const onRemove = vi.fn();
+      const folder = resolve(assets, `${randomUUID()}`);
+      await mkdir(folder, { recursive: true });
+      const target = await createTestTarget();
+      _subscriptions.push(target.remove().subscribe(onRemove));
+
+      // Act.
+      await rm(folder, { recursive: true, force: true });
+      await sleep(delay);
+
+      // Assert.
+      expect(onRemove).toHaveBeenCalledWith(
+        expect.objectContaining({ path: folder }),
+      );
     });
 
     it("should stream the absolute path of the give path if the path itself is removed", async () => {
@@ -113,7 +161,9 @@ describe.sequential("ZFileWatch", () => {
       await sleep(delay);
 
       // Assert.
-      expect(onRemove).toHaveBeenCalledWith(file);
+      expect(onRemove).toHaveBeenCalledWith(
+        expect.objectContaining({ path: file }),
+      );
     });
   });
 });
