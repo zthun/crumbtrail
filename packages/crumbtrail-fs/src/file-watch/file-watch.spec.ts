@@ -51,7 +51,10 @@ describe.sequential("ZFileWatch", () => {
       );
     });
 
-    it("should stream the absolute path when a new folder is created", async () => {
+    // This is here for potential future cases.
+    // Not all OS's report folders, only MacOS
+    // does consistently
+    it.skip("should stream the absolute path when a new folder is created", async () => {
       // Arrange.
       const folder = resolve(assets, `${randomUUID()}.json`);
       const onAdd = vi.fn();
@@ -130,7 +133,10 @@ describe.sequential("ZFileWatch", () => {
       );
     });
 
-    it("should stream the absolute path of a folder when it is removed", async () => {
+    // This is here for potential future cases.
+    // Not all OS's report folders, only MacOS
+    // does consistently
+    it.skip("should stream the absolute path of a folder when it is removed", async () => {
       // Arrange.
       const onRemove = vi.fn();
       const folder = resolve(assets, `${randomUUID()}`);
