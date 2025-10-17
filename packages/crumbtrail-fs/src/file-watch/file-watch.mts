@@ -14,6 +14,16 @@ import {
  */
 export interface IZFileWatch {
   /**
+   * Starts the watch operation.
+   */
+  start(): Promise<void>;
+
+  /**
+   * Stops the watch operation.
+   */
+  stop(): Promise<void>;
+
+  /**
    * The stream for files being added.
    *
    * This can only occur if the target being watched
