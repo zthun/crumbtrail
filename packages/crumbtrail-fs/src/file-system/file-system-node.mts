@@ -79,7 +79,6 @@ export class ZFileSystemNodeBuilder {
 
   public stats(s: Stats) {
     const builder = this.size(s.size).created(s.birthtime).updated(s.mtime);
-
     return s.isFile() ? builder.file() : builder.folder();
   }
 
