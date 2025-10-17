@@ -1,8 +1,8 @@
 import type { PathLike } from "fs";
-import { mkdir, writeFile } from "fs/promises";
-import { noop } from "lodash-es";
+import { writeFile } from "fs/promises";
 import { dirname } from "path";
 import { resolvePathLike } from "../resolve-path-like/resolve-path-like.js";
+import { ZStreamFolder } from "./stream-folder.mjs";
 import type { IZStreamWrite, IZStreamWriteOptions } from "./stream-write.mjs";
 
 /**
@@ -16,7 +16,7 @@ export class ZStreamFile implements IZStreamWrite {
     const _path = resolvePathLike(path);
     const directory = dirname(_path);
 
-    await mkdir(directory, { recursive: true }).catch(noop);
+    await new ZStreamFolder().write(directory);
     await writeFile(path, buffer, { flush: true });
 
     return buffer.length;
