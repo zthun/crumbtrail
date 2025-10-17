@@ -57,7 +57,7 @@ export interface IZFileWatch {
 }
 
 /**
- * An implementation of the IZFileWatch using basic node apis.
+ * An implementation of the IZFileWatch.
  */
 export class ZFileWatch implements IZFileWatch {
   private _add: Subject<IZFileSystemNode> = new Subject<IZFileSystemNode>();
