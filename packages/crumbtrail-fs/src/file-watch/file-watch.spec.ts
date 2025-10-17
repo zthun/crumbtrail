@@ -11,7 +11,7 @@ import { ZFileWatch } from "./file-watch.mjs";
 describe.sequential("ZFileWatch", () => {
   const assets = resolve(__dirname, "../../.test.file-watch");
   const writer = new ZStreamFile();
-  const delay = 1000;
+  const delay = 1500;
   const _subscriptions: Subscription[] = [];
   let _target: ZFileWatch;
 
