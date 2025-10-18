@@ -31,10 +31,11 @@ describe.sequential("ZStreamFile", () => {
 
     it("should read file contents", async () => {
       // Arrange.
+      const controller = new AbortController();
       const target = await createWrittenTestTarget();
 
       // Act.
-      const buffer = await target.read(file, { nocache: true });
+      const buffer = await target.read(file, { signal: controller.signal });
       const actual = buffer.toString();
 
       // Assert.

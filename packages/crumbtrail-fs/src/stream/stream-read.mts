@@ -1,15 +1,20 @@
-import type { PathLike } from "node:fs";
+import type { OpenMode, PathLike } from "node:fs";
 
 /**
  * Options for reading from a stream.
  */
 export interface IZStreamReadOptions {
   /**
-   * Do not utilize any cache.
-   *
-   * This always forces a read from the disk.
+   * Allows you to cancel the read if it's taking too long.
    */
-  nocache?: boolean;
+  signal?: AbortSignal;
+
+  /**
+   * The way that node will open the file.
+   *
+   * Default is 'r'
+   */
+  flag?: OpenMode;
 }
 
 /**
