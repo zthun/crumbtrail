@@ -1,71 +1,131 @@
 import { randomUUID } from "node:crypto";
-import { readFile, rm, unlink } from "node:fs/promises";
+import { readFile, rm, unlink, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { describe, expect, it } from "vitest";
+import { beforeEach } from "node:test";
+import { afterAll, describe, expect, it } from "vitest";
 import { ZStreamFile } from "./stream-file.mjs";
 
-describe.sequential("ZStreamWriteFile", () => {
-  const assets = resolve(__dirname, "../../assets");
+describe.sequential("ZStreamFile", () => {
+  const assets = resolve(__dirname, "../../.test.stream-file");
+  const file = resolve(assets, `${randomUUID()}.json`);
 
   const createTestTarget = () => new ZStreamFile();
 
-  it("should create the file if not writing any data", async () => {
-    // Arrange
-    const file = resolve(assets, `${randomUUID()}.json`);
-    const target = createTestTarget();
-
-    // Act.
-    await target.write(file);
-
-    // Assert.
-    await expect(unlink(file)).resolves.toBeUndefined();
+  beforeEach(async () => {
+    await rm(assets, { recursive: true, force: true });
   });
 
-  it("should create the file and write the contents", async () => {
-    // Arrange.
-    const contents = "Should be written to the file";
-    const file = resolve(assets, `${randomUUID()}.json`);
-    const target = createTestTarget();
-
-    // Act.
-    await target.write(file, { buffer: Buffer.from(contents) });
-    const buffer = await readFile(file);
-    const actual = buffer.toString();
-
-    // Assert.
-    await expect(unlink(file)).resolves.toBeUndefined();
-    expect(actual).toEqual(contents);
+  afterAll(async () => {
+    await rm(assets, { recursive: true, force: true });
   });
 
-  it("should update the contents of an existing file", async () => {
-    // Arrange.
-    const contents = "Should be written to existing file";
-    const file = resolve(assets, `${randomUUID()}.json`);
-    const target = createTestTarget();
+  describe.sequential("Read", () => {
+    const originalFileContents = "Original File Contents";
 
-    // Act.
-    await target.write(file);
-    await target.write(file, { buffer: Buffer.from(contents) });
-    const buffer = await readFile(file);
-    const actual = buffer.toString();
+    const createWrittenTestTarget = async () => {
+      const _target = createTestTarget();
+      await _target.write(file, { buffer: Buffer.from(originalFileContents) });
 
-    // Assert.
-    await expect(unlink(file)).resolves.toBeUndefined();
-    expect(actual).toEqual(contents);
+      return _target;
+    };
+
+    it("should read file contents", async () => {
+      // Arrange.
+      const target = await createWrittenTestTarget();
+
+      // Act.
+      const buffer = await target.read(file, { nocache: true });
+      const actual = buffer.toString();
+
+      // Assert.
+      expect(actual).toEqual(originalFileContents);
+    });
+
+    it("should return the same file contents if the file has not been updated", async () => {
+      // Arrange.
+      const target = await createWrittenTestTarget();
+      await target.read(file);
+
+      // Act.
+      const buffer = await target.read(file);
+      const actual = buffer.toString();
+
+      // Assert.
+      expect(actual).toEqual(originalFileContents);
+    });
+
+    it("should return updated file contents if the file date has changed", async () => {
+      // Arrange.
+      const updatedFileContents = "New Contents";
+      const target = await createWrittenTestTarget();
+      await target.read(file);
+
+      // Act.
+      await writeFile(file, updatedFileContents);
+      const buffer = await target.read(file);
+      const actual = buffer.toString();
+
+      // Assert.
+      expect(actual).toEqual(updatedFileContents);
+    });
   });
 
-  it("should write the file and create the directory if it does not exist", async () => {
-    // Arrange.
-    const name = `${randomUUID()}.json`;
-    const folder = resolve(assets, randomUUID());
-    const file = resolve(folder, randomUUID(), name);
-    const target = createTestTarget();
+  describe.sequential("Write", () => {
+    it("should create the file if not writing any data", async () => {
+      // Arrange
+      const target = createTestTarget();
 
-    // Act.
-    await target.write(file);
+      // Act.
+      await target.write(file);
 
-    // Assert.
-    await expect(unlink(file)).resolves.toBeUndefined();
-    await expect(rm(folder, { recursive: true })).resolves.toBeUndefined();
+      // Assert.
+      await expect(unlink(file)).resolves.toBeUndefined();
+    });
+
+    it("should create the file and write the contents", async () => {
+      // Arrange.
+      const contents = "Should be written to the file";
+      const target = createTestTarget();
+
+      // Act.
+      await target.write(file, { buffer: Buffer.from(contents) });
+      const buffer = await readFile(file);
+      const actual = buffer.toString();
+
+      // Assert.
+      await expect(unlink(file)).resolves.toBeUndefined();
+      expect(actual).toEqual(contents);
+    });
+
+    it("should update the contents of an existing file", async () => {
+      // Arrange.
+      const contents = "Should be written to existing file";
+      const target = createTestTarget();
+
+      // Act.
+      await target.write(file);
+      await target.write(file, { buffer: Buffer.from(contents) });
+      const buffer = await readFile(file);
+      const actual = buffer.toString();
+
+      // Assert.
+      await expect(unlink(file)).resolves.toBeUndefined();
+      expect(actual).toEqual(contents);
+    });
+
+    it("should write the file and create the directory if it does not exist", async () => {
+      // Arrange.
+      const name = `${randomUUID()}.json`;
+      const folder = resolve(assets, randomUUID());
+      const file = resolve(folder, randomUUID(), name);
+      const target = createTestTarget();
+
+      // Act.
+      await target.write(file);
+
+      // Assert.
+      await expect(unlink(file)).resolves.toBeUndefined();
+      await expect(rm(folder, { recursive: true })).resolves.toBeUndefined();
+    });
   });
 });
