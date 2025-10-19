@@ -1,5 +1,4 @@
-import { sleep } from "@zthun/helpful-fn";
-import { randomUUID } from "node:crypto";
+import { createGuid, sleep } from "@zthun/helpful-fn";
 import { mkdir, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import type { Subscription } from "rxjs";
@@ -35,7 +34,7 @@ describe.sequential("ZFileWatch", () => {
   describe.sequential("Add", () => {
     it("should stream the absolute path of a new file when a file is created", async () => {
       // Arrange.
-      const file = resolve(assets, `${randomUUID()}.json`);
+      const file = resolve(assets, `${createGuid()}.json`);
       const onAdd = vi.fn();
       await mkdir(assets, { recursive: true });
       const target = await createTestTarget();
@@ -56,7 +55,7 @@ describe.sequential("ZFileWatch", () => {
     // does consistently
     it.skip("should stream the absolute path when a new folder is created", async () => {
       // Arrange.
-      const folder = resolve(assets, `${randomUUID()}.json`);
+      const folder = resolve(assets, `${createGuid()}.json`);
       const onAdd = vi.fn();
       await mkdir(assets, { recursive: true });
       const target = await createTestTarget();
@@ -80,7 +79,7 @@ describe.sequential("ZFileWatch", () => {
     it("should stream the absolute path of a file when its contents change", async () => {
       // Arrange.
       const onUpdate = vi.fn();
-      const file = resolve(assets, `${randomUUID()}.json`);
+      const file = resolve(assets, `${createGuid()}.json`);
       await writer.write(file, { buffer: Buffer.from("Old") });
       const target = await createTestTarget();
       _subscriptions.push(target.update().subscribe(onUpdate));
@@ -98,7 +97,7 @@ describe.sequential("ZFileWatch", () => {
     it("should stream the absolute path of the given path if the path itself changes", async () => {
       // Arrange.
       const onUpdate = vi.fn();
-      const file = resolve(assets, `${randomUUID()}.json`);
+      const file = resolve(assets, `${createGuid()}.json`);
       await writer.write(file, { buffer: Buffer.from("Old") });
       const target = await createTestTarget(file);
       _subscriptions.push(target.update().subscribe(onUpdate));
@@ -118,7 +117,7 @@ describe.sequential("ZFileWatch", () => {
     it("should stream the absolute path of a file when it is removed", async () => {
       // Arrange.
       const onRemove = vi.fn();
-      const file = resolve(assets, `${randomUUID()}.json`);
+      const file = resolve(assets, `${createGuid()}.json`);
       await writer.write(file);
       const target = await createTestTarget();
       _subscriptions.push(target.remove().subscribe(onRemove));
@@ -139,7 +138,7 @@ describe.sequential("ZFileWatch", () => {
     it.skip("should stream the absolute path of a folder when it is removed", async () => {
       // Arrange.
       const onRemove = vi.fn();
-      const folder = resolve(assets, `${randomUUID()}`);
+      const folder = resolve(assets, `${createGuid()}`);
       await mkdir(folder, { recursive: true });
       const target = await createTestTarget();
       _subscriptions.push(target.remove().subscribe(onRemove));
@@ -157,7 +156,7 @@ describe.sequential("ZFileWatch", () => {
     it("should stream the absolute path of the give path if the path itself is removed", async () => {
       // Arrange.
       const onRemove = vi.fn();
-      const file = resolve(assets, `${randomUUID()}.json`);
+      const file = resolve(assets, `${createGuid()}.json`);
       await writer.write(file);
       const target = await createTestTarget(file);
       _subscriptions.push(target.remove().subscribe(onRemove));

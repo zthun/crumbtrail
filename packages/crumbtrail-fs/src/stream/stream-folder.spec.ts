@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createGuid } from "@zthun/helpful-fn";
 import { rm, stat, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
@@ -31,7 +31,7 @@ describe("ZStreamFolder", () => {
 
   it("should do nothing if the folder exists", async () => {
     // Arrange.
-    const folder = resolve(assets, randomUUID());
+    const folder = resolve(assets, createGuid());
     const target = createTestTarget();
 
     // Act.
@@ -56,7 +56,7 @@ describe("ZStreamFolder", () => {
 
   it("should throw an error if a file exists at the target location", async () => {
     // Arrange.
-    const file = resolve(assets, randomUUID());
+    const file = resolve(assets, createGuid());
     const target = createTestTarget();
     await target.write(assets);
     await writeFile(file, Buffer.from("I am file"));

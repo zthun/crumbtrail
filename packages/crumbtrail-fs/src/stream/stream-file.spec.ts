@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createGuid } from "@zthun/helpful-fn";
 import { readFile, rm, unlink, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { beforeEach } from "node:test";
@@ -8,7 +8,7 @@ import { ZStreamFile } from "./stream-file.mjs";
 
 describe.sequential("ZStreamFile", () => {
   const assets = resolve(__dirname, "../../.test.stream-file");
-  const file = resolve(assets, `${randomUUID()}.json`);
+  const file = resolve(assets, `${createGuid()}.json`);
 
   const createTestTarget = (options?: IZStreamFileOptions) =>
     new ZStreamFile(options);
@@ -130,9 +130,9 @@ describe.sequential("ZStreamFile", () => {
 
     it("should write the file and create the directory if it does not exist", async () => {
       // Arrange.
-      const name = `${randomUUID()}.json`;
-      const folder = resolve(assets, randomUUID());
-      const file = resolve(folder, randomUUID(), name);
+      const name = `${createGuid()}.json`;
+      const folder = resolve(assets, createGuid());
+      const file = resolve(folder, createGuid(), name);
       const target = createTestTarget();
 
       // Act.

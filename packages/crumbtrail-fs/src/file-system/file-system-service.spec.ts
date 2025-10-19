@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createGuid } from "@zthun/helpful-fn";
 import { basename, dirname, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { ZFileSystemNodeType } from "./file-system-node.mjs";
@@ -134,7 +134,7 @@ describe("ZFileSystemService", () => {
     it("should return null if no such file exists in the file system", async () => {
       // Arrange.
       const target = createTestTarget();
-      const path = randomUUID();
+      const path = createGuid();
 
       // Act.
       const actual = await target.walk(path);
