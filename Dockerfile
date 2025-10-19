@@ -1,21 +1,21 @@
-FROM node:lts as setup
+FROM node:lts AS setup
 WORKDIR /usr/dev
 COPY . .
 RUN yarn install
 
-FROM setup as analyze
+FROM setup AS analyze
 RUN yarn lint
 
-FROM setup as check
+FROM setup AS check
 RUN yarn check
 
-FROM setup as test
+FROM setup AS test
 RUN yarn test
 
-FROM setup as build
+FROM setup AS build
 RUN yarn build
 
-FROM build as release
+FROM build AS release
 USER root
 RUN git config --global credential.helper store && \
     git config --global user.name "Circle CI" && \
@@ -31,8 +31,8 @@ RUN --mount=type=secret,id=GIT_CREDENTIALS,dst=/root/.git-credentials npx lerna 
     git push --tags
 RUN --mount=type=secret,id=NPM_CREDENTIALS,dst=/root/.npmrc npx lerna publish from-package --yes
 
-FROM node:lts-alpine as crumbtrail-web-install
+FROM node:lts-alpine AS crumbtrail-web-install
 RUN npm install -g @zthun/crumbtrail-web
 
-FROM nginx:stable-alpine as crumbtrail-web
+FROM nginx:stable-alpine AS crumbtrail-web
 COPY --from=crumbtrail-web-install /usr/local/lib/node_modules/@zthun/crumbtrail-web/dist/. /usr/share/nginx/html/

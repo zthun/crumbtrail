@@ -5,6 +5,8 @@ reports
 *.tgz
 .rpt2_cache
 .certificates
+.test
+.test.*
 
 # Secrets
 .secrets
