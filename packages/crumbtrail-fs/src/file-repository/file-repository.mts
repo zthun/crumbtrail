@@ -1,7 +1,7 @@
 import { firstDefined, sleep } from "@zthun/helpful-fn";
 import type { IZDataRequest, IZDataSource } from "@zthun/helpful-query";
 import { ZDataSourceStatic } from "@zthun/helpful-query";
-import { find, findIndex, flatten, uniqBy } from "lodash-es";
+import { find, findIndex, flatten, trimEnd, uniqBy } from "lodash-es";
 import { minimatch } from "minimatch";
 import { resolve, sep } from "node:path";
 import type { Subscription } from "rxjs";
@@ -115,6 +115,7 @@ export class ZFileRepository implements IZFileRepository {
       .remove()
       .subscribe(async (node: IZFileSystemNode) => {
         let nodes = await this._nodes;
+        const path = trimEnd(node.path, sep);
 
         // It's possible that the node given was a folder.  If that happens,
         // we need to remove all files that start with the given path.
@@ -124,9 +125,9 @@ export class ZFileRepository implements IZFileRepository {
         const next = async () =>
           findIndex(await nodes.items(), (n) => {
             return (
-              n.path === node.path ||
-              (n.path.startsWith(node.path) &&
-                n.path.substring(node.path.length).charAt(0) === sep)
+              n.path === path ||
+              (n.path.startsWith(path) &&
+                n.path.substring(path.length).charAt(0) === sep)
             );
           });
 
