@@ -162,6 +162,25 @@ describe.sequential("ZFileSystemRepository", () => {
         // Assert.
         expect(actual).toEqual(0);
       });
+
+      it("should remove only the files found inside a parent folder and not ones named very similar", async () => {
+        // Arrange.
+        const dir = resolve(assets, "foo");
+        const foo = resolve(dir, "foo.txt");
+        const foobar = resolve(assets, "foobar", "bar.txt");
+        await fileWriter.write(foo);
+        await fileWriter.write(foobar);
+        const target = await createTestTarget();
+
+        // Act.
+        await rm(dir, { recursive: true, force: true });
+        await sleep(delay);
+        const actual = await target.retrieve(new ZDataRequestBuilder().build());
+
+        // Assert.
+        expect(actual.length).toEqual(1);
+        expect(find(actual, (f) => f.path === foobar)).toBeTruthy();
+      });
     });
 
     describe.sequential("Update", () => {

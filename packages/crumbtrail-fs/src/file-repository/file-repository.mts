@@ -3,7 +3,7 @@ import type { IZDataRequest, IZDataSource } from "@zthun/helpful-query";
 import { ZDataSourceStatic } from "@zthun/helpful-query";
 import { find, findIndex, flatten, uniqBy } from "lodash-es";
 import { minimatch } from "minimatch";
-import { resolve } from "path";
+import { resolve, sep } from "node:path";
 import type { Subscription } from "rxjs";
 import {
   ZFileSystemNodeType,
@@ -98,6 +98,7 @@ export class ZFileRepository implements IZFileRepository {
       });
 
     this._watcher = new ZFileWatch(path);
+
     this._add = this._watcher
       .add()
       .subscribe(async (node: IZFileSystemNode) => {
@@ -109,24 +110,33 @@ export class ZFileRepository implements IZFileRepository {
           this._nodes = nodes.insert(node);
         }
       });
+
     this._remove = this._watcher
       .remove()
       .subscribe(async (node: IZFileSystemNode) => {
         let nodes = await this._nodes;
 
-        const next = async () =>
-          findIndex(await nodes.items(), (n) => n.path.startsWith(node.path));
-
         // It's possible that the node given was a folder.  If that happens,
         // we need to remove all files that start with the given path.
         // If the node does point to a file, then there is no possibility that
         // more than 1 item would be removed.
+
+        const next = async () =>
+          findIndex(await nodes.items(), (n) => {
+            return (
+              n.path === node.path ||
+              (n.path.startsWith(node.path) &&
+                n.path.substring(node.path.length).charAt(0) === sep)
+            );
+          });
+
         for (let index = await next(); index >= 0; index = await next()) {
           nodes = await nodes.removeAt(index);
         }
 
         this._nodes = Promise.resolve(nodes);
       });
+
     this._update = this._watcher
       .update()
       .subscribe(async (node: IZFileSystemNode) => {
