@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.0](https://github.com/zthun/crumbtrail/compare/v2.1.4...v2.2.0) (2025-10-19)
+
+
+### Features
+
+* file repository is currently experimental and not exported yet ([21513ca](https://github.com/zthun/crumbtrail/commit/21513ca063386a2770797e59760c706374cc0a60))
+* file system repository can watch for files and folders being added ([abca0e0](https://github.com/zthun/crumbtrail/commit/abca0e0a146c09eba3835b8ff8b4af4a90c27a4c))
+* file system repository captures the file system state at a given time ([cb55a23](https://github.com/zthun/crumbtrail/commit/cb55a236d1eee86c484baa48d84d265f6aa5d5ca))
+* file watch watches the file system for changes ([2fb9b6a](https://github.com/zthun/crumbtrail/commit/2fb9b6a4834cc06aeb29097c574e9138a9eb5045))
+* resolve path like converts a PathLike variable to a string ([656843c](https://github.com/zthun/crumbtrail/commit/656843c68469082bc1abcfe2d7e5978bc67d0efc))
+* stream file and stream write help with reading and writing files ([46b917a](https://github.com/zthun/crumbtrail/commit/46b917a5363a64461f95ae8f2ae0c9cc2adafda9))
+* stream file can read files as well ([2891cfd](https://github.com/zthun/crumbtrail/commit/2891cfd787f6e600c264609136e887e969af35d8))
+* stream file will cache files under a threshold to perform faster reads later on ([171cb30](https://github.com/zthun/crumbtrail/commit/171cb30e1bac9711f5f179bc39a80f59e7c20acf))
+* stream folder creates folders on the file system ([eb2ff3b](https://github.com/zthun/crumbtrail/commit/eb2ff3ba9948f26f1a76e1dd847f4b689eb09927))
+* you can now set the entire node values from stats ([54a7909](https://github.com/zthun/crumbtrail/commit/54a79098551b65aa44507ab9f9cb18721bddc0d5))
+
+
+
 ## [2.1.4](https://github.com/zthun/crumbtrail/compare/v2.1.3...v2.1.4) (2025-10-04)
 
 **Note:** Version bump only for package @zthun/crumbtrail
