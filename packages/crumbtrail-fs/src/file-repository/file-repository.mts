@@ -51,6 +51,20 @@ export class ZFileRepository implements IZFileRepository {
   private _update: Subscription | undefined;
 
   /**
+   * Gets the path that this repository is watching.
+   */
+  public get path() {
+    return this._path;
+  }
+
+  /**
+   * Gets the globs matchers that this repository is matching against.
+   */
+  public get globs() {
+    return this._globs.slice();
+  }
+
+  /**
    * Initializes the repository with the given root and glob filter.
    *
    * This will initially scan the file system and setup watches.

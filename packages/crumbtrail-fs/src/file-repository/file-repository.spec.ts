@@ -53,6 +53,7 @@ describe.sequential("ZFileSystemRepository", () => {
       const actual = await target.retrieve(new ZDataRequestBuilder().build());
 
       // Assert.
+      expect(target.path).toEqual(assets);
       expect(find(actual, (f) => f.path === json)).toBeTruthy();
       expect(find(actual, (f) => f.path === xml)).toBeTruthy();
       expect(find(actual, (f) => f.path === txt)).toBeTruthy();
@@ -60,12 +61,14 @@ describe.sequential("ZFileSystemRepository", () => {
 
     it("should only find files in the given glob scopes", async () => {
       // Arrange.
-      const target = await createTestTarget(["**/*.xml"]);
+      const globs = ["**/*.xml"];
+      const target = await createTestTarget(globs);
 
       // Act.
       const actual = await target.retrieve(new ZDataRequestBuilder().build());
 
       // Assert.
+      expect(target.globs).toEqual(globs);
       expect(find(actual, (f) => f.path === json)).toBeFalsy();
       expect(find(actual, (f) => f.path === xml)).toBeTruthy();
       expect(find(actual, (f) => f.path === txt)).toBeFalsy();
