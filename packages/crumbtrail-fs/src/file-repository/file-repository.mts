@@ -66,7 +66,7 @@ export class ZFileRepository implements IZFileRepository {
    *        using filters, but filtering out unwanted files frees up the internal
    *        memory being used.
    */
-  public async setRoot(path: string, globs: string[] = ["**"]) {
+  public async initialize(path: string, globs: string[] = ["**"]) {
     await this.reset();
 
     this._path = path;

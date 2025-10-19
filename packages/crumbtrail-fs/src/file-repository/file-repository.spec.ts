@@ -22,7 +22,7 @@ describe.sequential("ZFileSystemRepository", () => {
   const createTestTarget = async (globs?: string[]) => {
     _target = new ZFileRepository();
     await folderWriter.write(assets);
-    await _target.setRoot(assets, globs);
+    await _target.initialize(assets, globs);
     return _target;
   };
 
