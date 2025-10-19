@@ -3701,7 +3701,7 @@ __metadata:
   resolution: "@zthun/crumbtrail-fs@workspace:packages/crumbtrail-fs"
   dependencies:
     "@zthun/helpful-fn": "npm:^9.6.0"
-    "@zthun/helpful-query": "npm:^9.6.0"
+    "@zthun/helpful-query": "npm:^9.7.1"
     "@zthun/janitor-build-config": "npm:^19.3.6"
     chokidar: "npm:^4.0.3"
     glob: "npm:^11.0.3"
@@ -3780,13 +3780,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zthun/helpful-query@npm:^9.6.0":
-  version: 9.6.0
-  resolution: "@zthun/helpful-query@npm:9.6.0"
+"@zthun/helpful-query@npm:^9.7.1":
+  version: 9.7.1
+  resolution: "@zthun/helpful-query@npm:9.7.1"
   dependencies:
     "@zthun/helpful-fn": "npm:^9.6.0"
     lodash-es: "npm:^4.17.21"
-  checksum: 10c0/4614618d38acb2e08e369648e08af5166fa161806ad0d3129422a73c69529adaeec38a804adc1d3eeff60b1ba2b3bbf8c9234d47e3d02d39b6eb8ce15574a970
+  checksum: 10c0/725a514185f5f153d359b8be1cc41c49c54e9bd4608494673917b86ebf8a13fb59e1677848472db5dffa18ff8795506f8021cf728f0e5b8ddb8e6cedce2381b2
   languageName: node
   linkType: hard
 
