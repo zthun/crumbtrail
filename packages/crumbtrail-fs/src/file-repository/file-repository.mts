@@ -1,92 +1,172 @@
-import { flatten, uniqBy } from "lodash-es";
-import { cwd } from "node:process";
-import type { IZFileSystemNode } from "../file-system/file-system-node.mjs";
-import type { IZFileSystemService } from "../file-system/file-system-service.mjs";
+import { firstDefined, sleep } from "@zthun/helpful-fn";
+import type { IZDataRequest, IZDataSource } from "@zthun/helpful-query";
+import { ZDataSourceStatic } from "@zthun/helpful-query";
+import { find, findIndex, flatten, uniqBy } from "lodash-es";
+import { minimatch } from "minimatch";
+import { resolve } from "path";
+import type { Subscription } from "rxjs";
+import {
+  ZFileSystemNodeType,
+  type IZFileSystemNode,
+} from "../file-system/file-system-node.mjs";
+import {
+  ZFileSystemService,
+  type IZFileSystemService,
+} from "../file-system/file-system-service.mjs";
+import { ZFileWatch, type IZFileWatch } from "../file-watch/file-watch.mjs";
 
 /**
- * Options for watching and retrieving files from the file system.
+ * Represents a repository for the file system.
  */
-export interface IZFileRepositoryOptions {
+export interface IZFileRepository extends IZDataSource<IZFileSystemNode> {
   /**
-   * The path to watch.
+   * Retrieves a single file from the repository.
    *
-   * If this is falsy, then the actual cwd is used
-   * from node.
-   */
-  path?: string;
-
-  /**
-   * Glob patterns of files to include in the retrieval.
+   * @param path -
+   *        The fully qualified path to the file.
    *
-   * If this is falsy, then [**] will be used.
+   * @returns
+   *        The node that represents the file. Returns null if no
+   *        such file exists.
    */
-  globs?: string[];
+  get(path: string): Promise<IZFileSystemNode | null>;
 }
 
 /**
- * Represents a cache for a file system to quickly retrieve files and folders
- * into memory.
+ * Represents an implementation of a ZFileRepository that watches
+ * a given path scope.
  *
- * The use of this is for file system heavy operations where you don't want
- * to continuously read the file system over and over again.  This pulls
- * all files and folders in a directory into memory.
+ * This repository is only concerned about files.  Folders
+ * will not be retrieved from this repository.
  */
-export class ZFileRepository {
-  private _nodes: IZFileSystemNode[] = [];
-  private _current: Promise<IZFileSystemNode[]> = Promise.resolve([]);
+export class ZFileRepository implements IZFileRepository {
+  private _service: IZFileSystemService = new ZFileSystemService();
+  private _watcher: IZFileWatch | undefined;
+  private _nodes: Promise<ZDataSourceStatic<IZFileSystemNode>> =
+    Promise.resolve(new ZDataSourceStatic<IZFileSystemNode>([]));
+  private _globs: string[] = ["**"];
+  private _path: string = "";
+  private _add: Subscription | undefined;
+  private _remove: Subscription | undefined;
 
   /**
-   * Initializes a new instance of this object.
-   */
-  public constructor(
-    private readonly service: IZFileSystemService,
-    options: IZFileRepositoryOptions = {},
-  ) {
-    const { path = cwd(), globs = ["**"] } = options;
-
-    this._current = Promise.resolve()
-      .then(() => {
-        const searches = globs.map((g) =>
-          this.service.search(g, {
-            cwd: path,
-            stat: true,
-          }),
-        );
-        return Promise.all(searches);
-      })
-      .then((results) => {
-        // We have to concat the existing nodes list in the case that a file
-        // was added while the search was happening
-        const discovered = flatten(results).concat(this._nodes);
-        this._nodes = uniqBy(discovered, (n) => n.path);
-        return this._nodes;
-      });
-  }
-
-  /**
-   * Waits for a current job to finish its execution.
-   */
-  public async flush() {
-    await this._current;
-  }
-
-  /**
-   * Destroys this repository.
+   * Initializes the repository with the given root and glob filter.
    *
-   * Sets the node list to empty. This method is idempotent.
-   * If this object is already destroyed, then this method
-   * does nothing.
+   * This will initially scan the file system and setup watches.
+   * If you call this method again, then the repository will be
+   * {@link reset} and a new set of files will be added to the
+   * repository.
+   *
+   * @param path -
+   *        The root path of the repository.
+   * @param globs -
+   *        The optional relative globs of the repository.  If this is falsy,
+   *        then ** is used.  You can achieve the same kind of operation
+   *        using filters, but filtering out unwanted files frees up the internal
+   *        memory being used.
    */
-  public async destroy() {
-    await this.flush();
-    this._nodes = [];
+  public async setRoot(path: string, globs: string[] = ["**"]) {
+    await this.reset();
+
+    this._path = path;
+    this._globs = globs;
+
+    // Note that this all happens in the background and should
+    // only be awaited later.  So the search should not be
+    // required to finish when existing this method.  The only
+    // requirement is that the repository is reset and the path +
+    // glob scope is updated.  Everything beyond here should not
+    // be awaited - it will be awaited later once the caller
+    // tries to retrieve the files using retrieve, get, or
+    // count.
+    const matches = globs.map((g) =>
+      this._service.search(g, {
+        cwd: path,
+        stat: true,
+      }),
+    );
+
+    this._nodes = Promise.all(matches)
+      .then((nodes) => {
+        const flat = flatten(nodes);
+        const uniq = uniqBy(flat, (n) => n.path);
+        return uniq.filter((n) => n.type === ZFileSystemNodeType.File);
+      })
+      .then((files) => {
+        return new ZDataSourceStatic(files);
+      });
+
+    this._watcher = new ZFileWatch(path);
+    this._add = this._watcher
+      .add()
+      .subscribe(async (node: IZFileSystemNode) => {
+        if (
+          node.type === ZFileSystemNodeType.File &&
+          this._globs.some((g) => minimatch(node.path, resolve(this._path, g)))
+        ) {
+          const nodes = await this._nodes;
+          this._nodes = nodes.insert(node);
+        }
+      });
+    this._remove = this._watcher
+      .remove()
+      .subscribe(async (node: IZFileSystemNode) => {
+        let nodes = await this._nodes;
+
+        const next = async () =>
+          findIndex(await nodes.items(), (n) => n.path.startsWith(node.path));
+
+        // It's possible that the node given was a folder.  If that happens,
+        // we need to remove all files that start with the given path.
+        // If the node does point to a file, then there is no possibility that
+        // more than 1 item would be removed.
+        for (let index = await next(); index >= 0; index = await next()) {
+          nodes = await nodes.removeAt(index);
+        }
+
+        this._nodes = Promise.resolve(nodes);
+      });
+
+    // Kick off the initial seed operation with an even loop
+    // invocation.
+    await sleep(100);
+
+    await this._watcher.start();
   }
 
   /**
-   * Gets the list of the system nodes that have been found.
+   * Resets the repository as if it was initially created.
    */
-  public async list(): Promise<IZFileSystemNode[]> {
-    await this.flush();
-    return this._nodes;
+  public async reset(): Promise<void> {
+    await this._watcher?.stop();
+
+    this._add?.unsubscribe();
+    this._remove?.unsubscribe();
+
+    delete this._add;
+    delete this._remove;
+    delete this._watcher;
+
+    this._path = "";
+    this._globs = ["**"];
+    this._nodes = Promise.resolve(new ZDataSourceStatic<IZFileSystemNode>([]));
+  }
+
+  public async get(path: string): Promise<IZFileSystemNode | null> {
+    const nodes = await this._nodes;
+    const items = await nodes.items();
+    const node = find(items, (f) => f.path === path);
+
+    return firstDefined(null, node);
+  }
+
+  public async count(request: IZDataRequest): Promise<number> {
+    const source = await this._nodes;
+    return source.count(request);
+  }
+
+  public async retrieve(request: IZDataRequest): Promise<IZFileSystemNode[]> {
+    const source = await this._nodes;
+    return source.retrieve(request);
   }
 }
