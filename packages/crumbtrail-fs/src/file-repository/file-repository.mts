@@ -48,6 +48,7 @@ export class ZFileRepository implements IZFileRepository {
   private _path: string = "";
   private _add: Subscription | undefined;
   private _remove: Subscription | undefined;
+  private _update: Subscription | undefined;
 
   /**
    * Initializes the repository with the given root and glob filter.
@@ -126,6 +127,23 @@ export class ZFileRepository implements IZFileRepository {
 
         this._nodes = Promise.resolve(nodes);
       });
+    this._update = this._watcher
+      .update()
+      .subscribe(async (node: IZFileSystemNode) => {
+        const nodes = await this._nodes;
+        const index = findIndex(
+          await nodes.items(),
+          (n) => n.path === node.path,
+        );
+
+        // It's possible node was filtered out by the globs, or
+        // it is a directory.  If so, then we won't have it in our
+        // list.
+        if (index >= 0) {
+          const next = await nodes.removeAt(index);
+          this._nodes = next.insert(node, index);
+        }
+      });
 
     // Kick off the initial seed operation with an even loop
     // invocation.
@@ -142,9 +160,11 @@ export class ZFileRepository implements IZFileRepository {
 
     this._add?.unsubscribe();
     this._remove?.unsubscribe();
+    this._update?.unsubscribe();
 
     delete this._add;
     delete this._remove;
+    delete this._update;
     delete this._watcher;
 
     this._path = "";

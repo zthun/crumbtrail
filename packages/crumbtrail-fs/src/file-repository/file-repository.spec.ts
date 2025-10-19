@@ -1,7 +1,7 @@
 import { createGuid, sleep } from "@zthun/helpful-fn";
 import { ZDataRequestBuilder } from "@zthun/helpful-query";
 import { find } from "lodash-es";
-import { rm } from "node:fs/promises";
+import { rename, rm, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 import { afterAll, afterEach, beforeEach, describe, expect, it } from "vitest";
 import { ZStreamFile } from "../stream/stream-file.mjs";
@@ -86,78 +86,117 @@ describe.sequential("ZFileSystemRepository", () => {
   describe.sequential("Mutations", () => {
     const delay = 1500;
 
-    it("should add a file to the repository when a new file is created", async () => {
-      // Arrange.
-      const target = await createTestTarget();
+    describe.sequential("Add", () => {
+      it("should add a file to the repository when a new file is created", async () => {
+        // Arrange.
+        const target = await createTestTarget();
 
-      // Act.
-      await fileWriter.write(txt, { buffer: Buffer.from("New File") });
-      await sleep(delay);
-      const actual = await target.retrieve(new ZDataRequestBuilder().build());
+        // Act.
+        await fileWriter.write(txt, { buffer: Buffer.from("New File") });
+        await sleep(delay);
+        const actual = await target.retrieve(new ZDataRequestBuilder().build());
 
-      // Assert.
-      expect(find(actual, (f) => f.path === txt)).toBeTruthy();
+        // Assert.
+        expect(find(actual, (f) => f.path === txt)).toBeTruthy();
+      });
+
+      it("should not add directories", async () => {
+        // Arrange.
+        const folder = resolve(assets, createGuid());
+        const target = await createTestTarget();
+
+        // Act.
+        await folderWriter.write(folder);
+        await sleep(delay);
+        const actual = await target.retrieve(new ZDataRequestBuilder().build());
+
+        // Assert.
+        expect(find(actual, (f) => f.path === folder)).toBeFalsy();
+      });
+
+      it("should only add files that match the glob patterns", async () => {
+        // Arrange.
+        const target = await createTestTarget(["**/*.txt"]);
+
+        // Act.
+        await fileWriter.write(json);
+        await fileWriter.write(xml);
+        await fileWriter.write(txt);
+        await sleep(delay);
+        const actual = await target.retrieve(new ZDataRequestBuilder().build());
+
+        // Assert.
+        expect(find(actual, (f) => f.path === json)).toBeFalsy();
+        expect(find(actual, (f) => f.path === xml)).toBeFalsy();
+        expect(find(actual, (f) => f.path === txt)).toBeTruthy();
+      });
     });
 
-    it("should not add directories", async () => {
-      // Arrange.
-      const folder = resolve(assets, createGuid());
-      const target = await createTestTarget();
+    describe.sequential("Remove", () => {
+      it("should remove a file from the repository when a file is unlinked", async () => {
+        // Arrange.
+        await fileWriter.write(txt);
+        const target = await createTestTarget();
 
-      // Act.
-      await folderWriter.write(folder);
-      await sleep(delay);
-      const actual = await target.retrieve(new ZDataRequestBuilder().build());
+        // Act.
+        await rm(txt);
+        await sleep(delay);
+        const actual = await target.count(new ZDataRequestBuilder().build());
 
-      // Assert.
-      expect(find(actual, (f) => f.path === folder)).toBeFalsy();
+        // Assert.
+        expect(actual).toEqual(0);
+      });
+
+      it("should remove all files from the repository when a parent folder is unlinked", async () => {
+        // Arrange.
+        await fileWriter.write(json);
+        await fileWriter.write(xml);
+        await fileWriter.write(txt);
+        const target = await createTestTarget();
+
+        // Act.
+        await rm(assets, { recursive: true, force: true });
+        await sleep(delay);
+        const actual = await target.count(new ZDataRequestBuilder().build());
+
+        // Assert.
+        expect(actual).toEqual(0);
+      });
     });
 
-    it("should only add files that match the glob patterns", async () => {
-      // Arrange.
-      const target = await createTestTarget(["**/*.txt"]);
+    describe.sequential("Update", () => {
+      it("should replace the node with a node that has updated its stats", async () => {
+        // Arrange.
+        await fileWriter.write(json);
+        const target = await createTestTarget();
+        const buffer = Buffer.from("Updated file content");
 
-      // Act.
-      await fileWriter.write(json);
-      await fileWriter.write(xml);
-      await fileWriter.write(txt);
-      await sleep(delay);
-      const actual = await target.retrieve(new ZDataRequestBuilder().build());
+        // Act.
+        await fileWriter.write(json, { buffer });
+        const { size } = await stat(json);
+        const expected = BigInt(size);
+        await sleep(delay);
+        const actual = await target.get(json);
 
-      // Assert.
-      expect(find(actual, (f) => f.path === json)).toBeFalsy();
-      expect(find(actual, (f) => f.path === xml)).toBeFalsy();
-      expect(find(actual, (f) => f.path === txt)).toBeTruthy();
-    });
+        // Assert.
+        expect(actual?.size).toEqual(expected);
+      });
 
-    it("should remove a file from the repository when a file is unlinked", async () => {
-      // Arrange.
-      await fileWriter.write(txt);
-      const target = await createTestTarget();
+      it("should replace the node with a node that was renamed", async () => {
+        // Arrange.
+        await fileWriter.write(json);
+        const target = await createTestTarget();
 
-      // Act.
-      await rm(txt);
-      await sleep(delay);
-      const actual = await target.count(new ZDataRequestBuilder().build());
+        // Act.
+        await rename(json, xml);
+        await sleep(delay);
+        const _json = await target.get(json);
+        const _xml = await target.get(xml);
 
-      // Assert.
-      expect(actual).toEqual(0);
-    });
-
-    it("should remove all files from the repository when a parent folder is unlinked", async () => {
-      // Arrange.
-      await fileWriter.write(json);
-      await fileWriter.write(xml);
-      await fileWriter.write(txt);
-      const target = await createTestTarget();
-
-      // Act.
-      await rm(assets, { recursive: true, force: true });
-      await sleep(delay);
-      const actual = await target.count(new ZDataRequestBuilder().build());
-
-      // Assert.
-      expect(actual).toEqual(0);
+        // Assert.
+        expect(_json).toBeNull();
+        expect(_xml).toBeTruthy();
+      });
     });
   });
 
