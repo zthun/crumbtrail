@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.2](https://github.com/zthun/crumbtrail/compare/v2.3.1...v2.3.2) (2025-10-20)
+
+
+### Bug Fixes
+
+* file system service search does support pattern lists as well ([a51ba30](https://github.com/zthun/crumbtrail/commit/a51ba3031a5fc8b624ab74f86305c423b803a799))
+
+
+
 ## [2.3.1](https://github.com/zthun/crumbtrail/compare/v2.3.0...v2.3.1) (2025-10-20)
 
 
