@@ -73,7 +73,8 @@ export interface IZFileSystemService {
    * Reads all nodes that match a pattern.
    *
    * @param pattern -
-   *        The pattern string to match against.
+   *        The pattern string to match against or a list
+   *        of patterns to match.
    * @param options -
    *        The options for the search.
    *
@@ -81,7 +82,7 @@ export interface IZFileSystemService {
    *        A list of path strings that match the given patterns.
    */
   search(
-    pattern: string,
+    pattern: string | string[],
     options?: IZFileSystemSearchOptions,
   ): Promise<IZFileSystemNode[]>;
 
