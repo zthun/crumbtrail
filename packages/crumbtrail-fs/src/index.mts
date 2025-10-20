@@ -3,6 +3,7 @@ export * from "./file-system/file-system-node.mjs";
 export * from "./file-system/file-system-service.mjs";
 export * from "./file-watch/file-watch.mjs";
 export * from "./resolve-path-like/resolve-path-like.js";
+export * from "./sleep-watch-delay/sleep-watch-delay.mjs";
 export * from "./stream/stream-file.mjs";
 export * from "./stream/stream-folder.mjs";
 export * from "./stream/stream-write.mjs";
