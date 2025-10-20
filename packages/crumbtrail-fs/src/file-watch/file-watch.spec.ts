@@ -1,16 +1,16 @@
-import { createGuid, sleep } from "@zthun/helpful-fn";
+import { createGuid } from "@zthun/helpful-fn";
 import { mkdir, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import type { Subscription } from "rxjs";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ZFileSystemNodeType } from "../file-system/file-system-node.mjs";
+import { sleepWatchDelay } from "../sleep-watch-delay/sleep-watch-delay.mjs";
 import { ZStreamFile } from "../stream/stream-file.mjs";
 import { ZFileWatch } from "./file-watch.mjs";
 
 describe.sequential("ZFileWatch", () => {
   const assets = resolve(__dirname, "../../.test.file-watch");
   const writer = new ZStreamFile();
-  const delay = 1500;
   const _subscriptions: Subscription[] = [];
   let _target: ZFileWatch;
 
@@ -42,7 +42,7 @@ describe.sequential("ZFileWatch", () => {
 
       // Act.
       await writer.write(file, { buffer: Buffer.from("Contents") });
-      await sleep(delay);
+      await sleepWatchDelay();
 
       // Assert.
       expect(onAdd).toHaveBeenCalledWith(
@@ -63,7 +63,7 @@ describe.sequential("ZFileWatch", () => {
 
       // Act.
       await mkdir(folder);
-      await sleep(delay);
+      await sleepWatchDelay();
 
       // Assert.
       expect(onAdd).toHaveBeenCalledWith(
@@ -86,7 +86,7 @@ describe.sequential("ZFileWatch", () => {
 
       // Act.
       await writer.write(file, { buffer: Buffer.from("New") });
-      await sleep(delay);
+      await sleepWatchDelay();
 
       // Assert.
       expect(onUpdate).toHaveBeenCalledWith(
@@ -104,7 +104,7 @@ describe.sequential("ZFileWatch", () => {
 
       // Act.
       await writer.write(file, { buffer: Buffer.from("New") });
-      await sleep(delay);
+      await sleepWatchDelay();
 
       // Assert.
       expect(onUpdate).toHaveBeenCalledWith(
@@ -124,7 +124,7 @@ describe.sequential("ZFileWatch", () => {
 
       // Act.
       await rm(file);
-      await sleep(delay);
+      await sleepWatchDelay();
 
       // Assert.
       expect(onRemove).toHaveBeenCalledWith(
@@ -145,7 +145,7 @@ describe.sequential("ZFileWatch", () => {
 
       // Act.
       await rm(folder, { recursive: true, force: true });
-      await sleep(delay);
+      await sleepWatchDelay();
 
       // Assert.
       expect(onRemove).toHaveBeenCalledWith(
@@ -163,7 +163,7 @@ describe.sequential("ZFileWatch", () => {
 
       // Act.
       await rm(file);
-      await sleep(delay);
+      await sleepWatchDelay();
 
       // Assert.
       expect(onRemove).toHaveBeenCalledWith(

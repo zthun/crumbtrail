@@ -1,9 +1,10 @@
-import { createGuid, sleep } from "@zthun/helpful-fn";
+import { createGuid } from "@zthun/helpful-fn";
 import { ZDataRequestBuilder } from "@zthun/helpful-query";
 import { find } from "lodash-es";
 import { rename, rm, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 import { afterAll, afterEach, beforeEach, describe, expect, it } from "vitest";
+import { sleepWatchDelay } from "../sleep-watch-delay/sleep-watch-delay.mjs";
 import { ZStreamFile } from "../stream/stream-file.mjs";
 import { ZStreamFolder } from "../stream/stream-folder.mjs";
 import { ZFileRepository } from "./file-repository.mjs";
@@ -87,8 +88,6 @@ describe.sequential("ZFileSystemRepository", () => {
   });
 
   describe.sequential("Mutations", () => {
-    const delay = 1500;
-
     describe.sequential("Add", () => {
       it("should add a file to the repository when a new file is created", async () => {
         // Arrange.
@@ -96,7 +95,7 @@ describe.sequential("ZFileSystemRepository", () => {
 
         // Act.
         await fileWriter.write(txt, { buffer: Buffer.from("New File") });
-        await sleep(delay);
+        await sleepWatchDelay();
         const actual = await target.retrieve(new ZDataRequestBuilder().build());
 
         // Assert.
@@ -110,7 +109,7 @@ describe.sequential("ZFileSystemRepository", () => {
 
         // Act.
         await folderWriter.write(folder);
-        await sleep(delay);
+        await sleepWatchDelay();
         const actual = await target.retrieve(new ZDataRequestBuilder().build());
 
         // Assert.
@@ -125,7 +124,7 @@ describe.sequential("ZFileSystemRepository", () => {
         await fileWriter.write(json);
         await fileWriter.write(xml);
         await fileWriter.write(txt);
-        await sleep(delay);
+        await sleepWatchDelay();
         const actual = await target.retrieve(new ZDataRequestBuilder().build());
 
         // Assert.
@@ -143,7 +142,7 @@ describe.sequential("ZFileSystemRepository", () => {
 
         // Act.
         await rm(txt);
-        await sleep(delay);
+        await sleepWatchDelay();
         const actual = await target.count(new ZDataRequestBuilder().build());
 
         // Assert.
@@ -159,7 +158,7 @@ describe.sequential("ZFileSystemRepository", () => {
 
         // Act.
         await rm(assets, { recursive: true, force: true });
-        await sleep(delay);
+        await sleepWatchDelay();
         const actual = await target.count(new ZDataRequestBuilder().build());
 
         // Assert.
@@ -177,7 +176,7 @@ describe.sequential("ZFileSystemRepository", () => {
 
         // Act.
         await rm(dir, { recursive: true, force: true });
-        await sleep(delay);
+        await sleepWatchDelay();
         const actual = await target.retrieve(new ZDataRequestBuilder().build());
 
         // Assert.
@@ -197,7 +196,7 @@ describe.sequential("ZFileSystemRepository", () => {
         await fileWriter.write(json, { buffer });
         const { size } = await stat(json);
         const expected = BigInt(size);
-        await sleep(delay);
+        await sleepWatchDelay();
         const actual = await target.get(json);
 
         // Assert.
@@ -211,7 +210,7 @@ describe.sequential("ZFileSystemRepository", () => {
 
         // Act.
         await rename(json, xml);
-        await sleep(delay);
+        await sleepWatchDelay();
         const _json = await target.get(json);
         const _xml = await target.get(xml);
 
