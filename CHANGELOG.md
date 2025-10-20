@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.0](https://github.com/zthun/crumbtrail/compare/v2.2.2...v2.3.0) (2025-10-20)
+
+
+### Features
+
+* sleep watch delay sleeps for enough time to pick up a watch event ([7d96b7a](https://github.com/zthun/crumbtrail/commit/7d96b7a01b05c2db9cee93fff06b76419109a697))
+
+
+
 ## [2.2.2](https://github.com/zthun/crumbtrail/compare/v2.2.1...v2.2.2) (2025-10-19)
 
 **Note:** Version bump only for package @zthun/crumbtrail
