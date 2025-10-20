@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/zthun/crumbtrail/compare/v2.3.0...v2.3.1) (2025-10-20)
+
+
+### Bug Fixes
+
+* export sleep watch delay ([c350948](https://github.com/zthun/crumbtrail/commit/c350948ee8ded0a73f97cbabaf0dfa3fceb62ce1))
+
+
+
 ## [2.3.0](https://github.com/zthun/crumbtrail/compare/v2.2.2...v2.3.0) (2025-10-20)
 
 
