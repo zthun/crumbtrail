@@ -9,7 +9,7 @@ import { ZStreamFile } from "../stream/stream-file.mjs";
 import { ZStreamFolder } from "../stream/stream-folder.mjs";
 import { ZFileRepository } from "./file-repository.mjs";
 
-describe.sequential("ZFileSystemRepository", () => {
+describe("ZFileSystemRepository", () => {
   const assets = resolve(__dirname, "../../.test.file-system-repository");
   const fileWriter = new ZStreamFile();
   const folderWriter = new ZStreamFolder();
@@ -39,7 +39,7 @@ describe.sequential("ZFileSystemRepository", () => {
     await rm(assets, { recursive: true, force: true });
   });
 
-  describe.sequential("Initial Scan", () => {
+  describe("Initial Scan", () => {
     beforeEach(async () => {
       await fileWriter.write(json);
       await fileWriter.write(xml);
@@ -99,8 +99,8 @@ describe.sequential("ZFileSystemRepository", () => {
     });
   });
 
-  describe.sequential("Mutations", () => {
-    describe.sequential("Add", () => {
+  describe("Mutations", () => {
+    describe("Add", () => {
       it("should add a file to the repository when a new file is created", async () => {
         // Arrange.
         const target = await createTestTarget();
@@ -146,7 +146,7 @@ describe.sequential("ZFileSystemRepository", () => {
       });
     });
 
-    describe.sequential("Remove", () => {
+    describe("Remove", () => {
       it("should remove a file from the repository when a file is unlinked", async () => {
         // Arrange.
         await fileWriter.write(txt);
@@ -197,7 +197,7 @@ describe.sequential("ZFileSystemRepository", () => {
       });
     });
 
-    describe.sequential("Update", () => {
+    describe("Update", () => {
       it("should replace the node with a node that has updated its stats", async () => {
         // Arrange.
         await fileWriter.write(json);
@@ -233,7 +233,7 @@ describe.sequential("ZFileSystemRepository", () => {
     });
   });
 
-  describe.sequential("Get", () => {
+  describe("Get", () => {
     beforeEach(async () => {
       await fileWriter.write(json);
       await fileWriter.write(xml);
