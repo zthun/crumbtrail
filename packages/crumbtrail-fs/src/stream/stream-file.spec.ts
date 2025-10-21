@@ -6,7 +6,7 @@ import { afterAll, describe, expect, it } from "vitest";
 import type { IZStreamFileOptions } from "./stream-file.mjs";
 import { ZStreamFile } from "./stream-file.mjs";
 
-describe.sequential("ZStreamFile", () => {
+describe("ZStreamFile", () => {
   const assets = resolve(__dirname, "../../.test.stream-file");
   const file = resolve(assets, `${createGuid()}.json`);
 
@@ -21,7 +21,7 @@ describe.sequential("ZStreamFile", () => {
     await rm(assets, { recursive: true, force: true });
   });
 
-  describe.sequential("Read", () => {
+  describe("Read", () => {
     const originalFileContents = "Original File Contents";
 
     const createWrittenTestTarget = async (options?: IZStreamFileOptions) => {
@@ -85,7 +85,7 @@ describe.sequential("ZStreamFile", () => {
     });
   });
 
-  describe.sequential("Write", () => {
+  describe("Write", () => {
     it("should create the file if not writing any data", async () => {
       // Arrange
       const target = createTestTarget();

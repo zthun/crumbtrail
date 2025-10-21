@@ -8,7 +8,7 @@ import { sleepWatchDelay } from "../sleep-watch-delay/sleep-watch-delay.mjs";
 import { ZStreamFile } from "../stream/stream-file.mjs";
 import { ZFileWatch } from "./file-watch.mjs";
 
-describe.sequential("ZFileWatch", () => {
+describe("ZFileWatch", () => {
   const assets = resolve(__dirname, "../../.test.file-watch");
   const writer = new ZStreamFile();
   const _subscriptions: Subscription[] = [];
@@ -31,7 +31,7 @@ describe.sequential("ZFileWatch", () => {
     await rm(assets, { recursive: true, force: true });
   });
 
-  describe.sequential("Add", () => {
+  describe("Add", () => {
     it("should stream the absolute path of a new file when a file is created", async () => {
       // Arrange.
       const file = resolve(assets, `${createGuid()}.json`);
@@ -75,7 +75,7 @@ describe.sequential("ZFileWatch", () => {
     });
   });
 
-  describe.sequential("Update", () => {
+  describe("Update", () => {
     it("should stream the absolute path of a file when its contents change", async () => {
       // Arrange.
       const onUpdate = vi.fn();
@@ -113,7 +113,7 @@ describe.sequential("ZFileWatch", () => {
     });
   });
 
-  describe.sequential("Remove", () => {
+  describe("Remove", () => {
     it("should stream the absolute path of a file when it is removed", async () => {
       // Arrange.
       const onRemove = vi.fn();
