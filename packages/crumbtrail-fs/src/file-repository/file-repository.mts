@@ -174,7 +174,7 @@ export class ZFileRepository implements IZFileRepository {
     // invocation.
     await sleep(100);
 
-    await this._watcher.start();
+    await this._watcher?.start();
   }
 
   /**

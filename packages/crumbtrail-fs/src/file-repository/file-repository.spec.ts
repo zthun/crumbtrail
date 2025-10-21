@@ -46,6 +46,18 @@ describe.sequential("ZFileSystemRepository", () => {
       await fileWriter.write(txt);
     });
 
+    it("should shut down immediately", async () => {
+      // Arrange.
+      const target = await createTestTarget();
+
+      // Act.
+      await target.reset();
+      const actual = await target.count(new ZDataRequestBuilder().build());
+
+      // Assert.
+      expect(actual).toEqual(0);
+    });
+
     it("should find all files in the given path", async () => {
       // Arrange.
       const target = await createTestTarget();
