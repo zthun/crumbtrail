@@ -1,6 +1,6 @@
 {
   "name": "@zthun/crumbtrail-nest",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "A file system module for nest based projects built upon crumbtrail-fs",
   "author": "Anthony Bonta",
   "license": "MIT",
@@ -25,7 +25,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@zthun/crumbtrail-fs": "^2.3.3"
+    "@zthun/crumbtrail-fs": "^2.3.4"
   },
   "devDependencies": {
     "@nestjs/common": "^11.1.7",
