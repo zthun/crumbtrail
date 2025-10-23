@@ -6,4 +6,5 @@ export * from "./resolve-path-like/resolve-path-like.js";
 export * from "./sleep-watch-delay/sleep-watch-delay.mjs";
 export * from "./stream/stream-file.mjs";
 export * from "./stream/stream-folder.mjs";
+export * from "./stream/stream-read.mjs";
 export * from "./stream/stream-write.mjs";
