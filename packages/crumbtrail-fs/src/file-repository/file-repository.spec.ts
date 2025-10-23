@@ -215,6 +215,21 @@ describe("ZFileSystemRepository", () => {
         expect(actual?.size).toEqual(expected);
       });
 
+      it("should not replace any node if the node was filtered out", async () => {
+        // Arrange.
+        await fileWriter.write(json);
+        await fileWriter.write(xml);
+        const target = await createTestTarget([".xml"]);
+
+        // Act.
+        await fileWriter.write(json, { buffer: Buffer.from("Nope") });
+        await sleepWatchDelay();
+        const actual = await target.get(json);
+
+        // Assert.
+        expect(actual).toBeNull();
+      });
+
       it("should replace the node with a node that was renamed", async () => {
         // Arrange.
         await fileWriter.write(json);
