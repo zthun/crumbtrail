@@ -55,6 +55,97 @@ describe("ZFileSystemNode", () => {
       const expected = "/path/to/node";
       expect(createTestTarget().path(expected).build().path).toEqual(expected);
     });
+
+    describe("Name", () => {
+      it("should set the value", () => {
+        const expected = "file.txt";
+        expect(
+          createTestTarget().path("/path/to/file.txt").build().name,
+        ).toEqual(expected);
+      });
+
+      it("should be empty if path is the root", () => {
+        expect(createTestTarget().path("/").build().name).toEqual("");
+      });
+
+      it("should be empty if path is empty", () => {
+        expect(createTestTarget().path("").build().name).toEqual("");
+      });
+    });
+
+    describe("Extension", () => {
+      it("should set the value", () => {
+        const expected = ".txt";
+        expect(
+          createTestTarget().file().path("/path/to/file.txt").build().extension,
+        ).toEqual(expected);
+      });
+
+      it("should be empty if path is the root", () => {
+        expect(createTestTarget().file().path("/").build().extension).toEqual(
+          "",
+        );
+      });
+
+      it("should be empty if path is empty", () => {
+        expect(createTestTarget().file().path("").build().extension).toEqual(
+          "",
+        );
+      });
+
+      it("should be empty if path is a folder", () => {
+        expect(
+          createTestTarget().path("/path/to/folder.documents").folder().build()
+            .extension,
+        ).toEqual("");
+      });
+    });
+
+    describe("Title", () => {
+      it("should set the value", () => {
+        const expected = "file";
+        expect(
+          createTestTarget().file().path("/path/to/file.txt").build().title,
+        ).toEqual(expected);
+      });
+
+      it("should be empty if path is the root", () => {
+        expect(createTestTarget().file().path("/").build().title).toEqual("");
+      });
+
+      it("should be empty if path is empty", () => {
+        expect(createTestTarget().file().path("").build().title).toEqual("");
+      });
+
+      it("should be the same as name if the type is a folder", () => {
+        const expected = "file.documents";
+
+        expect(
+          createTestTarget().path("/path/to/file.documents").build().title,
+        ).toEqual(expected);
+      });
+    });
+
+    describe("Parent", () => {
+      it("should set the value", () => {
+        const expected = "/path/to";
+        expect(
+          createTestTarget().path("/path/to/file.txt").build().parent,
+        ).toEqual(expected);
+      });
+
+      it("should be empty if path is the root", () => {
+        expect(createTestTarget().path("/").build().parent).toEqual("");
+      });
+
+      it("should be empty if path is empty", () => {
+        expect(createTestTarget().path("").build().parent).toEqual("");
+      });
+
+      it("should be empty if path is a drive path", () => {
+        expect(createTestTarget().path("C:\\\\").build().parent).toEqual("");
+      });
+    });
   });
 
   describe("Size", () => {
