@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.0](https://github.com/zthun/crumbtrail/compare/v2.3.4...v2.4.0) (2025-10-24)
+
+
+### Features
+
+* added helper properties to the file system node ([80ba17d](https://github.com/zthun/crumbtrail/commit/80ba17d0c0d5703cf04388275b478c136e3c7f6e))
+
+
+
 ## [2.3.4](https://github.com/zthun/crumbtrail/compare/v2.3.3...v2.3.4) (2025-10-23)
 
 
