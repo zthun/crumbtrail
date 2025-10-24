@@ -28,8 +28,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@zthun/helpful-fn": "^9.8.0",
-    "@zthun/helpful-query": "^9.8.0",
+    "@zthun/helpful-fn": "^9.9.0",
+    "@zthun/helpful-query": "^9.9.0",
     "chokidar": "^4.0.3",
     "glob": "^11.0.3",
     "lodash-es": "^4.17.21",
@@ -39,8 +39,8 @@
   "devDependencies": {
     "@zthun/janitor-build-config": "^19.4.1",
     "typescript": "^5.9.3",
-    "vite": "^7.1.11",
-    "vitest": "^4.0.1",
+    "vite": "^7.1.12",
+    "vitest": "^4.0.3",
     "vitest-mock-extended": "^3.1.0"
   },
   "files": [
