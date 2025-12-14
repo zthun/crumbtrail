@@ -28,14 +28,14 @@
     "@zthun/crumbtrail-fs": "^2.4.1"
   },
   "devDependencies": {
-    "@nestjs/common": "^11.1.8",
-    "@nestjs/core": "^11.1.8",
-    "@nestjs/testing": "^11.1.8",
-    "@zthun/janitor-build-config": "^19.4.2",
+    "@nestjs/common": "^11.1.9",
+    "@nestjs/core": "^11.1.9",
+    "@nestjs/testing": "^11.1.9",
+    "@zthun/janitor-build-config": "^19.5.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
-    "vite": "^7.1.12",
-    "vitest": "^4.0.5"
+    "vite": "^7.2.7",
+    "vitest": "^4.0.15"
   },
   "peerDependencies": {
     "@nestjs/common": "^11.1.2"
