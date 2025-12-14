@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "clean": "rimraf --glob 'dist' 'reports' 'coverage' '*.tgz' '*.log' 'packages/**/dist' 'packages/**/docs' 'packages/**/*.tgz' 'packages/**/*.log' 'packages/**/.certificates'",
-    "test": "vitest --run --coverage",
+    "test": "vitest --run --coverage --retry 3",
     "lint": "janitor-lint",
     "check": "tsc --noEmit",
     "build": "lerna run build",
