@@ -32,6 +32,7 @@
     "@nestjs/core": "^11.1.11",
     "@nestjs/testing": "^11.1.11",
     "@zthun/janitor-build-config": "^19.5.4",
+    "@zthun/janitor-ts-config": "^19.5.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
     "vite": "^7.3.0",
