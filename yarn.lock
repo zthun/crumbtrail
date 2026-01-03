@@ -3657,7 +3657,7 @@ __metadata:
     lodash-es: "npm:^4.17.22"
     minimatch: "npm:^10.1.1"
     rxjs: "npm:^7.8.2"
-    typescript: "npm:^5.9.3"
+    typescript: "npm:~5.9.3"
     vite: "npm:^7.3.0"
     vitest: "npm:^4.0.16"
     vitest-mock-extended: "npm:^3.1.0"
@@ -3676,6 +3676,7 @@ __metadata:
     "@zthun/janitor-ts-config": "npm:^19.5.3"
     reflect-metadata: "npm:^0.2.2"
     rxjs: "npm:^7.8.2"
+    typescript: "npm:~5.9.3"
     vite: "npm:^7.3.0"
     vitest: "npm:^4.0.16"
   peerDependencies:
@@ -12245,7 +12246,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:>=3 < 6, typescript@npm:^5.9.3, typescript@npm:~5.9.3":
+"typescript@npm:>=3 < 6, typescript@npm:~5.9.3":
   version: 5.9.3
   resolution: "typescript@npm:5.9.3"
   bin:
@@ -12265,7 +12266,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A>=3 < 6#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.9.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A~5.9.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A>=3 < 6#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A~5.9.3#optional!builtin<compat/typescript>":
   version: 5.9.3
   resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
   bin:
