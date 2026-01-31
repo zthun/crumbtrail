@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## <small>2.4.5 (2026-01-31)</small>
+
+* build: update outdated packages ([b55e9b0](https://github.com/zthun/crumbtrail/commit/b55e9b0))
+* chore: update yarn lockfile [skip ci] ([e246a09](https://github.com/zthun/crumbtrail/commit/e246a09))
+
+
+
+
+
 ## [2.4.4](https://github.com/zthun/crumbtrail/compare/v2.4.3...v2.4.4) (2026-01-04)
 
 **Note:** Version bump only for package @zthun/crumbtrail
