@@ -1,4 +1,10 @@
 {
   "extends": ["@zthun/janitor-ts-config/base", "@zthun/janitor-ts-config/node"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@zthun/crumbtrail-fs": ["../crumbtrail-fs/src/index.mts"]
+    }
+  },
   "include": ["src/**/*.ts", "src/**/*.mts"]
 }
