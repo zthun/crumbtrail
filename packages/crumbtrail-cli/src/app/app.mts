@@ -37,7 +37,7 @@ export class ZCrumbtrailApp {
    *        The message for when a file is added.
    */
   public static add(path: string): IZLogEntry {
-    return new ZLogEntryBuilder().info().message(`File added: ${path}`).build();
+    return new ZLogEntryBuilder().info().message(`Node added: ${path}`).build();
   }
 
   /**
@@ -49,7 +49,7 @@ export class ZCrumbtrailApp {
   public static remove(path: string): IZLogEntry {
     return new ZLogEntryBuilder()
       .warning()
-      .message(`File removed: ${path}`)
+      .message(`Node removed: ${path}`)
       .build();
   }
 
@@ -62,7 +62,7 @@ export class ZCrumbtrailApp {
   public static update(path: string): IZLogEntry {
     return new ZLogEntryBuilder()
       .info()
-      .message(`File updated: ${path}`)
+      .message(`Node updated: ${path}`)
       .build();
   }
 
