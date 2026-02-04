@@ -1,17 +1,25 @@
-import { ZLoggerSilent } from "@zthun/lumberjacky-log";
+import {
+  sleepWatchDelay,
+  ZStreamFile,
+  ZStreamFolder,
+} from "@zthun/crumbtrail-fs";
+import type { IZLogger } from "@zthun/lumberjacky-log";
+import { rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { cwd } from "node:process";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { Mocked } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { mock } from "vitest-mock-extended";
 import { ZCrumbtrailApp } from "./app.mjs";
 
 describe("ZCrumbtrailApp", () => {
   const directory = resolve(__dirname, ".test.cli");
 
-  const logger = new ZLoggerSilent();
+  let logger: Mocked<IZLogger>;
   let _target: ZCrumbtrailApp | undefined;
 
   beforeEach(() => {
-    vi.spyOn(logger, "log");
+    logger = mock<IZLogger>();
   });
 
   afterEach(async () => {
@@ -112,10 +120,137 @@ describe("ZCrumbtrailApp", () => {
       // Act.
       void target.run();
       await target.kill();
-      const actual = await target.watching();
+      const actual = [await target.watching(), await target.globs()];
 
       // Assert.
-      expect(actual).toBeFalsy();
+      expect(actual.some(Boolean)).toBeFalsy();
+    });
+  });
+
+  describe.sequential("IO", () => {
+    const file = new ZStreamFile();
+    const folder = new ZStreamFolder();
+
+    const createReadyTarget = async (globs?: string[]) => {
+      const target = createTestTarget();
+      void target.run({ directory, globs });
+      await target.ready();
+      logger.log.mockClear();
+      return target;
+    };
+
+    beforeEach(async () => {
+      await folder.write(directory);
+    });
+
+    afterEach(async () => {
+      await rm(directory, { force: true, recursive: true });
+    });
+
+    describe.sequential("Add", () => {
+      it("should log that a file was added", async () => {
+        // Arrange.
+        const path = resolve(directory, "sample.js");
+        const expected = ZCrumbtrailApp.add(path);
+        await createReadyTarget();
+
+        // Act.
+        await file.write(path);
+        await sleepWatchDelay();
+
+        // Assert.
+        expect(logger.log).toHaveBeenCalledWith(
+          expect.objectContaining({
+            level: expected.level,
+            message: expected.message,
+          }),
+        );
+      });
+
+      it("should not log anything if the file does not match the glob pattern", async () => {
+        // Arrange.
+        const path = resolve(directory, "sample.js");
+        await createReadyTarget(["*.ts"]);
+
+        // Act.
+        await file.write(path);
+        await sleepWatchDelay();
+
+        // Assert.
+        expect(logger.log).not.toHaveBeenCalled();
+      });
+    });
+
+    describe.sequential("Remove", () => {
+      it("should log that a file was removed", async () => {
+        // Arrange.
+        const path = resolve(directory, "sample.js");
+        await file.write(path);
+        const expected = ZCrumbtrailApp.remove(path);
+        await createReadyTarget();
+
+        // Act.
+        await rm(path, { force: true });
+        await sleepWatchDelay();
+
+        // Assert.
+        expect(logger.log).toHaveBeenCalledWith(
+          expect.objectContaining({
+            level: expected.level,
+            message: expected.message,
+          }),
+        );
+      });
+
+      it("should not log anything if the file does not match the glob pattern", async () => {
+        // Arrange.
+        const path = resolve(directory, "sample.js");
+        await file.write(path);
+        await createReadyTarget(["*.ts"]);
+
+        // Act.
+        await rm(path, { force: true });
+        await sleepWatchDelay();
+
+        // Assert.
+        expect(logger.log).not.toHaveBeenCalled();
+      });
+    });
+
+    describe.sequential("Update", () => {
+      it("should log that a file was updated", async () => {
+        // Arrange.
+        const path = resolve(directory, "sample.js");
+        await file.write(path);
+        const expected = ZCrumbtrailApp.update(path);
+        await createReadyTarget();
+
+        // Act.
+        await file.write(path, { buffer: Buffer.from("I am update") });
+        await sleepWatchDelay();
+
+        // Assert.
+        expect(logger.log).toHaveBeenCalledWith(
+          expect.objectContaining({
+            level: expected.level,
+            message: expected.message,
+          }),
+        );
+      });
+
+      it("should not log anything if the file does not match the glob pattern", async () => {
+        // Arrange.
+        const path = resolve(directory, "sample.js");
+        await file.write(path);
+        await createReadyTarget(["*.ts"]);
+
+        // Act.
+        await file.write(path, { buffer: Buffer.from("I am update") });
+        await sleepWatchDelay();
+
+        // Assert.
+        expect(logger.log).not.toHaveBeenCalled();
+      });
     });
   });
 });
