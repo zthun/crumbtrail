@@ -187,7 +187,7 @@ describe("ZCrumbtrailApp", () => {
         const path = resolve(directory, "sample.js");
         await file.write(path);
         const expected = ZCrumbtrailApp.remove(path);
-        await createReadyTarget();
+        await createReadyTarget([]);
 
         // Act.
         await rm(path, { force: true });
