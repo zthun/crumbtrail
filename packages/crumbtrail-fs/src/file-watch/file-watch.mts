@@ -1,4 +1,3 @@
-import { sleep } from "@zthun/helpful-fn";
 import type { FSWatcher } from "chokidar";
 import { watch } from "chokidar";
 import { type Stats } from "node:fs";
@@ -9,7 +8,6 @@ import {
   ZFileSystemNodeBuilder,
   type IZFileSystemNode,
 } from "../file-system/file-system-node.mjs";
-import { ZWatchDelay } from "../sleep-watch-delay/sleep-watch-delay.mjs";
 import { nudge } from "./nudge.mjs";
 
 /**
@@ -117,15 +115,8 @@ export class ZFileWatch implements IZFileWatch {
       .on("unlink", next.bind(this, this._remove))
       .on("unlinkDir", next.bind(this, this._remove));
 
-    this._controller = new AbortController();
-
-    void (async (controller: AbortController) => {
-      do {
-        // See the documentation for nudge for why this is here.
-        await nudge(this.path);
-        await sleep(ZWatchDelay * 0.75);
-      } while (!controller.signal.aborted);
-    })(this._controller);
+    // See the documentation for nudge for why this is here.
+    this._controller = nudge(this.path);
 
     return new Promise<void>((resolve) =>
       this._watcher?.on("ready", () => resolve()),
