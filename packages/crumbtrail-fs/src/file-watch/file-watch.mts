@@ -8,7 +8,6 @@ import {
   ZFileSystemNodeBuilder,
   type IZFileSystemNode,
 } from "../file-system/file-system-node.mjs";
-import { nudge } from "./nudge.mjs";
 
 /**
  * Represents and object that can watch a folder or file on the file system.
@@ -75,7 +74,6 @@ export class ZFileWatch implements IZFileWatch {
   private _update: Subject<IZFileSystemNode> = new Subject<IZFileSystemNode>();
   private _remove: Subject<IZFileSystemNode> = new Subject<IZFileSystemNode>();
   private _watcher: FSWatcher | undefined;
-  private _controller: AbortController | undefined;
 
   /**
    * Initializes a new instance of this object.
@@ -115,18 +113,12 @@ export class ZFileWatch implements IZFileWatch {
       .on("unlink", next.bind(this, this._remove))
       .on("unlinkDir", next.bind(this, this._remove));
 
-    // See the documentation for nudge for why this is here.
-    this._controller = nudge(this.path);
-
     return new Promise<void>((resolve) =>
       this._watcher?.on("ready", () => resolve()),
     );
   }
 
   public async stop() {
-    this._controller?.abort();
-    delete this._controller;
-
     await this._watcher?.close();
     delete this._watcher;
   }
