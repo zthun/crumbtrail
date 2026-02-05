@@ -3679,6 +3679,7 @@ __metadata:
     "@zthun/janitor-build-config": "npm:^19.5.6"
     "@zthun/janitor-ts-config": "npm:^19.5.3"
     chokidar: "npm:^5.0.0"
+    fast-glob: "npm:^3.3.3"
     glob: "npm:^13.0.1"
     lodash-es: "npm:^4.17.23"
     minimatch: "npm:^10.1.2"
