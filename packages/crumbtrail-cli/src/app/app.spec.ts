@@ -24,6 +24,7 @@ describe("ZCrumbtrailApp", () => {
 
   afterEach(async () => {
     await _target?.kill();
+    await _target?.kill();
   });
 
   const createTestTarget = () => {
@@ -134,6 +135,7 @@ describe("ZCrumbtrailApp", () => {
     const createReadyTarget = async (globs?: string[]) => {
       const target = createTestTarget();
       void target.run({ directory, globs });
+      void target.run({ directory, globs });
       await target.ready();
       logger.log.mockClear();
       return target;
@@ -159,7 +161,7 @@ describe("ZCrumbtrailApp", () => {
         await sleepWatchDelay();
 
         // Assert.
-        expect(logger.log).toHaveBeenCalledWith(
+        expect(logger.log).toHaveBeenCalledExactlyOnceWith(
           expect.objectContaining({
             level: expected.level,
             message: expected.message,
@@ -194,7 +196,7 @@ describe("ZCrumbtrailApp", () => {
         await sleepWatchDelay();
 
         // Assert.
-        expect(logger.log).toHaveBeenCalledWith(
+        expect(logger.log).toHaveBeenCalledExactlyOnceWith(
           expect.objectContaining({
             level: expected.level,
             message: expected.message,
@@ -230,7 +232,7 @@ describe("ZCrumbtrailApp", () => {
         await sleepWatchDelay();
 
         // Assert.
-        expect(logger.log).toHaveBeenCalledWith(
+        expect(logger.log).toHaveBeenCalledExactlyOnceWith(
           expect.objectContaining({
             level: expected.level,
             message: expected.message,

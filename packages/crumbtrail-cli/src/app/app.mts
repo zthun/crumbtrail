@@ -153,6 +153,14 @@ export class ZCrumbtrailApp {
    *        The process exit code.
    */
   public async run(args: IZCrumbtrailAppArguments = {}): Promise<number> {
+    if (this._promise) {
+      return this._promise;
+    }
+
+    const { promise, resolve } = Promise.withResolvers<number>();
+    this._resolve = resolve;
+    this._promise = promise;
+
     const { msg } = ZCrumbtrailApp;
     const { directory = cwd(), globs = ["**"] } = args;
 
@@ -173,9 +181,6 @@ export class ZCrumbtrailApp {
     this._ready = this._watch.start();
     await this._ready;
 
-    const { promise, resolve } = Promise.withResolvers<number>();
-    this._resolve = resolve;
-    this._promise = promise;
     return this._promise;
   }
 }
