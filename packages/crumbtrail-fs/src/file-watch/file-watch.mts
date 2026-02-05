@@ -1,6 +1,7 @@
+import { sleep } from "@zthun/helpful-fn";
 import type { FSWatcher } from "chokidar";
 import { watch } from "chokidar";
-import type { Stats } from "node:fs";
+import { type Stats } from "node:fs";
 import { resolve } from "node:path";
 import type { Observable } from "rxjs";
 import { Subject } from "rxjs";
@@ -8,6 +9,8 @@ import {
   ZFileSystemNodeBuilder,
   type IZFileSystemNode,
 } from "../file-system/file-system-node.mjs";
+import { ZWatchDelay } from "../sleep-watch-delay/sleep-watch-delay.mjs";
+import { nudge } from "./nudge.mjs";
 
 /**
  * Represents and object that can watch a folder or file on the file system.
@@ -112,6 +115,14 @@ export class ZFileWatch implements IZFileWatch {
       .on("change", next.bind(this, this._update))
       .on("unlink", next.bind(this, this._remove))
       .on("unlinkDir", next.bind(this, this._remove));
+
+    void (async () => {
+      do {
+        // See the documentation for nudge for why this is here.
+        await nudge(this.path);
+        await sleep(ZWatchDelay * 0.75);
+      } while (this._watcher);
+    })();
 
     return new Promise<void>((resolve) =>
       this._watcher?.on("ready", () => resolve()),
