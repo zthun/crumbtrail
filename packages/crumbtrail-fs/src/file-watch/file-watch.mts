@@ -77,6 +77,7 @@ export class ZFileWatch implements IZFileWatch {
   private _update: Subject<IZFileSystemNode> = new Subject<IZFileSystemNode>();
   private _remove: Subject<IZFileSystemNode> = new Subject<IZFileSystemNode>();
   private _watcher: FSWatcher | undefined;
+  private _controller: AbortController | undefined;
 
   /**
    * Initializes a new instance of this object.
@@ -116,13 +117,15 @@ export class ZFileWatch implements IZFileWatch {
       .on("unlink", next.bind(this, this._remove))
       .on("unlinkDir", next.bind(this, this._remove));
 
-    void (async () => {
+    this._controller = new AbortController();
+
+    void (async (controller: AbortController) => {
       do {
         // See the documentation for nudge for why this is here.
         await nudge(this.path);
         await sleep(ZWatchDelay * 0.75);
-      } while (this._watcher);
-    })();
+      } while (!controller.signal.aborted);
+    })(this._controller);
 
     return new Promise<void>((resolve) =>
       this._watcher?.on("ready", () => resolve()),
@@ -130,9 +133,11 @@ export class ZFileWatch implements IZFileWatch {
   }
 
   public async stop() {
+    this._controller?.abort();
+    delete this._controller;
+
     await this._watcher?.close();
     delete this._watcher;
-    return Promise.resolve();
   }
 
   public add() {
