@@ -1,5 +1,5 @@
 {
-  "name": "@zthun/crumbtrail-cli",
+  "name": "@zthun/crumbtrail-watch",
   "version": "2.4.5",
   "description": "An application for crumbtrail that watches a directory and notifies when files and folders change",
   "author": "Anthony Bonta",
@@ -7,7 +7,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/zthun/crumbtrail",
-    "directory": "packages/crumbtrail-cli"
+    "directory": "packages/crumbtrail-watch"
   },
   "type": "module",
   "types": "./dist/index.d.mts",
