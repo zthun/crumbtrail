@@ -7,12 +7,30 @@ import { uniq } from "lodash-es";
 import { minimatch } from "minimatch";
 import { resolve } from "node:path";
 import { cwd } from "node:process";
-import type { IZCrumbtrailAppArguments } from "./app-arguments.mjs";
+
+/**
+ * Arguments for the crumbtrail app.
+ */
+export interface IZCrumbtrailWatchOptions {
+  /**
+   * The directory to watch.
+   *
+   * If this is falsy, then the cwd is used.
+   */
+  directory?: string;
+
+  /**
+   * The list of file globs to watch.
+   *
+   * If this is falsy or empty, then '**' is used.
+   */
+  globs?: string[];
+}
 
 /**
  * The root application for the crumbtrail cli.
  */
-export class ZCrumbtrailApp {
+export class ZCrumbtrailWatch {
   private _logger: IZLogger;
   private _globs: string[] | undefined;
   private _watch: ZFileWatch | undefined;
@@ -129,17 +147,17 @@ export class ZCrumbtrailApp {
   }
 
   private _handleAdd(node: IZFileSystemNode) {
-    const { add } = ZCrumbtrailApp;
+    const { add } = ZCrumbtrailWatch;
     this._handleFsEvent(node.path, add(node.path));
   }
 
   private _handleRemove(node: IZFileSystemNode) {
-    const { remove } = ZCrumbtrailApp;
+    const { remove } = ZCrumbtrailWatch;
     this._handleFsEvent(node.path, remove(node.path));
   }
 
   private _handleUpdate(node: IZFileSystemNode) {
-    const { update } = ZCrumbtrailApp;
+    const { update } = ZCrumbtrailWatch;
     this._handleFsEvent(node.path, update(node.path));
   }
 
@@ -152,7 +170,7 @@ export class ZCrumbtrailApp {
    * @returns
    *        The process exit code.
    */
-  public async run(args: IZCrumbtrailAppArguments = {}): Promise<number> {
+  public async run(args: IZCrumbtrailWatchOptions = {}): Promise<number> {
     if (this._promise) {
       return this._promise;
     }
@@ -161,7 +179,7 @@ export class ZCrumbtrailApp {
     this._resolve = resolve;
     this._promise = promise;
 
-    const { msg } = ZCrumbtrailApp;
+    const { msg } = ZCrumbtrailWatch;
     const { directory = cwd(), globs = ["**"] } = args;
 
     this._globs = uniq(globs.slice());

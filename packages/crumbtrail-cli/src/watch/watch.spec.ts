@@ -10,13 +10,13 @@ import { cwd } from "node:process";
 import type { Mocked } from "vitest";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { mock } from "vitest-mock-extended";
-import { ZCrumbtrailApp } from "./app.mjs";
+import { ZCrumbtrailWatch } from "./watch.mjs";
 
-describe("ZCrumbtrailApp", () => {
+describe("ZCrumbtrailWatch", () => {
   const directory = resolve(__dirname, ".test.cli");
 
   let logger: Mocked<IZLogger>;
-  let _target: ZCrumbtrailApp | undefined;
+  let _target: ZCrumbtrailWatch | undefined;
 
   beforeEach(() => {
     logger = mock<IZLogger>();
@@ -28,7 +28,7 @@ describe("ZCrumbtrailApp", () => {
   });
 
   const createTestTarget = () => {
-    _target = new ZCrumbtrailApp(logger);
+    _target = new ZCrumbtrailWatch(logger);
     return _target;
   };
 
@@ -153,7 +153,7 @@ describe("ZCrumbtrailApp", () => {
       it("should log that a file was added", async () => {
         // Arrange.
         const path = resolve(directory, "sample.js");
-        const expected = ZCrumbtrailApp.add(path);
+        const expected = ZCrumbtrailWatch.add(path);
         await createReadyTarget();
 
         // Act.
@@ -188,7 +188,7 @@ describe("ZCrumbtrailApp", () => {
         // Arrange.
         const path = resolve(directory, "sample.js");
         await file.write(path);
-        const expected = ZCrumbtrailApp.remove(path);
+        const expected = ZCrumbtrailWatch.remove(path);
         await createReadyTarget([]);
 
         // Act.
@@ -224,7 +224,7 @@ describe("ZCrumbtrailApp", () => {
         // Arrange.
         const path = resolve(directory, "sample.js");
         await file.write(path);
-        const expected = ZCrumbtrailApp.update(path);
+        const expected = ZCrumbtrailWatch.update(path);
         await createReadyTarget();
 
         // Act.
