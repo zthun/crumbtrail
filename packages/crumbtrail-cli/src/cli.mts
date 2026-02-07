@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { ZWatchDelay } from "@zthun/crumbtrail-fs";
 import { ZLoggerConsole, ZLoggerSilent } from "@zthun/lumberjacky-log";
 import { Command } from "commander";
