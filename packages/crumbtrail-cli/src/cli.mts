@@ -20,8 +20,8 @@ application
   .option(
     "-g, --glob <pattern>",
     "Glob pattern (repeatable)",
-    (val, prev) => prev.concat(val),
-    ["**"],
+    (val, prev: string[]) => prev.concat(val),
+    [],
   )
   .action(async (options: IZCrumbtrailWatchOptions) => {
     const command = new ZCrumbtrailWatch(logger);
