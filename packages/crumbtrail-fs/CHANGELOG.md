@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## <small>2.4.6 (2026-02-07)</small>
+
+* refactor: migrate nudge to crumbtrail cli ([ce7fdbc](https://github.com/zthun/crumbtrail/commit/ce7fdbc))
+* refactor: move nudge behavior to encapsulate ([cc69891](https://github.com/zthun/crumbtrail/commit/cc69891))
+* refactor: remove the forced nudge from file watch ([6f5d5e4](https://github.com/zthun/crumbtrail/commit/6f5d5e4))
+* refactor: use an abort controller for watcher nudge stop ([b39a8c1](https://github.com/zthun/crumbtrail/commit/b39a8c1))
+* docs: nudge ([7545cd5](https://github.com/zthun/crumbtrail/commit/7545cd5))
+* chore: fix dependencies ([352f483](https://github.com/zthun/crumbtrail/commit/352f483))
+* fix: running inside a linux container with a non-linux host should now fire add and update events ([4dbcc93](https://github.com/zthun/crumbtrail/commit/4dbcc93))
+* build: update outdated packages ([afe3806](https://github.com/zthun/crumbtrail/commit/afe3806))
+
+
+
+
+
 ## <small>2.4.5 (2026-01-31)</small>
 
 * build: update outdated packages ([b55e9b0](https://github.com/zthun/crumbtrail/commit/b55e9b0))

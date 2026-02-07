@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## <small>2.4.6 (2026-02-07)</small>
+
+* docs: app name ([6e41245](https://github.com/zthun/crumbtrail/commit/6e41245))
+* docs: nudge ([7545cd5](https://github.com/zthun/crumbtrail/commit/7545cd5))
+* refactor: add logging for file events ([866204e](https://github.com/zthun/crumbtrail/commit/866204e))
+* refactor: add logging for nudging ([076ce64](https://github.com/zthun/crumbtrail/commit/076ce64))
+* refactor: invoking run twice should return the promise that's already running ([684881d](https://github.com/zthun/crumbtrail/commit/684881d))
+* refactor: migrate nudge to crumbtrail cli ([ce7fdbc](https://github.com/zthun/crumbtrail/commit/ce7fdbc))
+* refactor: move nudge behavior to encapsulate ([cc69891](https://github.com/zthun/crumbtrail/commit/cc69891))
+* refactor: move tsx to crumbtrail-cli ([76c4260](https://github.com/zthun/crumbtrail/commit/76c4260))
+* refactor: remove the forced nudge from file watch ([6f5d5e4](https://github.com/zthun/crumbtrail/commit/6f5d5e4))
+* refactor: rename app back to crumbtrail cli and use commander ([372ccac](https://github.com/zthun/crumbtrail/commit/372ccac))
+* refactor: rename to crumbtrail watch ([80f8056](https://github.com/zthun/crumbtrail/commit/80f8056))
+* refactor: shut the logger up if wanted ([a6178b6](https://github.com/zthun/crumbtrail/commit/a6178b6))
+* refactor: start glob pattern default at [] ([40633b5](https://github.com/zthun/crumbtrail/commit/40633b5))
+* refactor: use an abort controller for watcher nudge stop ([b39a8c1](https://github.com/zthun/crumbtrail/commit/b39a8c1))
+* refactor: use text, Node over file (to include folders as well) ([6af11e1](https://github.com/zthun/crumbtrail/commit/6af11e1))
+* build: add a docker compose for testing events with cross os file system operations ([be7fbad](https://github.com/zthun/crumbtrail/commit/be7fbad))
+* build: add binary launch information ([3263266](https://github.com/zthun/crumbtrail/commit/3263266))
+* build: add tsx runner ([a69f33b](https://github.com/zthun/crumbtrail/commit/a69f33b))
+* build: build the dockerfile for crumbtrail cli ([8c9f867](https://github.com/zthun/crumbtrail/commit/8c9f867))
+* build: dependencies ([9017cf8](https://github.com/zthun/crumbtrail/commit/9017cf8))
+* build: launch nudge ([7c5bd95](https://github.com/zthun/crumbtrail/commit/7c5bd95))
+* build: update outdated packages ([afe3806](https://github.com/zthun/crumbtrail/commit/afe3806))
+* build: watch and nudge together ([47a947c](https://github.com/zthun/crumbtrail/commit/47a947c))
+* test: try with empty array for glob listing ([6aaa99f](https://github.com/zthun/crumbtrail/commit/6aaa99f))
+* chore: fix dependencies ([352f483](https://github.com/zthun/crumbtrail/commit/352f483))
+* chore: spelling ([04218b7](https://github.com/zthun/crumbtrail/commit/04218b7))
+* chore: update yarn lockfile [skip ci] ([7db2da1](https://github.com/zthun/crumbtrail/commit/7db2da1))
+* fix: running inside a linux container with a non-linux host should now fire add and update events ([4dbcc93](https://github.com/zthun/crumbtrail/commit/4dbcc93))
+* feat: crumbtrail-cli adds a command line tool for testing crumbtrail watches ([c4520e5](https://github.com/zthun/crumbtrail/commit/c4520e5))
+
+
+
+
+
 ## <small>2.4.5 (2026-01-31)</small>
 
 * build: update outdated packages ([b55e9b0](https://github.com/zthun/crumbtrail/commit/b55e9b0))
