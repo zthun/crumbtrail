@@ -1,5 +1,6 @@
 import { ZWatchDelay } from "@zthun/crumbtrail-fs";
 import { sleep } from "@zthun/helpful-fn";
+import { ZLoggerSilent } from "@zthun/lumberjacky-log";
 import glob from "fast-glob";
 import { readdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -28,7 +29,7 @@ describe("ZCrumbtrailNudge", () => {
   });
 
   const createTestTarget = () => {
-    _target = new ZCrumbtrailNudge();
+    _target = new ZCrumbtrailNudge(new ZLoggerSilent());
     return _target;
   };
 

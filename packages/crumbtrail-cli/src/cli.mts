@@ -1,5 +1,5 @@
 import { ZWatchDelay } from "@zthun/crumbtrail-fs";
-import { ZLoggerConsole } from "@zthun/lumberjacky-log";
+import { ZLoggerConsole, ZLoggerSilent } from "@zthun/lumberjacky-log";
 import { Command } from "commander";
 import type { IZCrumbtrailNudgeOptions } from "./nudge/nudge.mjs";
 import { ZCrumbtrailNudge } from "./nudge/nudge.mjs";
@@ -33,15 +33,17 @@ application
   .command("nudge")
   .description("Touch directory timestamps to prompt a refresh")
   .option("-d, --directory <path>", "Directory to refresh", process.cwd())
-  .option("-r, --recursive", "Nudge all subdirectories as well", false)
+  .option("--recursive", "Nudge all subdirectories as well", false)
+  .option("--silent", "Do not log any output.  Nudge silently", false)
   .option(
     "-e, --every <ms>",
     "Time between nudges in milliseconds",
-    parseInt,
+    (v) => Number.parseInt(v, 10),
     ZWatchDelay,
   )
-  .action(async (options: IZCrumbtrailNudgeOptions) => {
-    const command = new ZCrumbtrailNudge();
+  .action(async (options: IZCrumbtrailNudgeOptions & { silent: boolean }) => {
+    const log = options.silent ? new ZLoggerSilent() : logger;
+    const command = new ZCrumbtrailNudge(log);
     process.exitCode = await command.run(options);
   });
 
