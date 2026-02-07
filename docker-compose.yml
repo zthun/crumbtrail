@@ -12,4 +12,4 @@ services:
     volumes:
       - .:/usr/dev
     working_dir: /usr/dev
-    command: yarn workspace @zthun/crumbtrail-cli debug nudge
+    command: yarn workspace @zthun/crumbtrail-cli debug nudge --recursive
