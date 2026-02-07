@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## <small>2.4.7 (2026-02-07)</small>
+
+* fix: cli node directive ([ea3887f](https://github.com/zthun/crumbtrail/commit/ea3887f))
+* build: docker container for crumbtrail cli ([d373cd5](https://github.com/zthun/crumbtrail/commit/d373cd5))
+* chore: update yarn lockfile [skip ci] ([b092744](https://github.com/zthun/crumbtrail/commit/b092744))
+
+
+
+
+
 ## <small>2.4.6 (2026-02-07)</small>
 
 * docs: app name ([6e41245](https://github.com/zthun/crumbtrail/commit/6e41245))
