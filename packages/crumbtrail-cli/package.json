@@ -1,6 +1,6 @@
 {
   "name": "@zthun/crumbtrail-cli",
-  "version": "2.4.7",
+  "version": "2.4.8",
   "description": "An application for crumbtrail that helps with debugging io issues",
   "author": "Anthony Bonta",
   "license": "MIT",

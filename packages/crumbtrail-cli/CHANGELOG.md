@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## <small>2.4.8 (2026-02-07)</small>
+
+**Note:** Version bump only for package @zthun/crumbtrail-cli
+
+
+
+
+
 ## <small>2.4.7 (2026-02-07)</small>
 
 * fix: cli node directive ([ea3887f](https://github.com/zthun/crumbtrail/commit/ea3887f))

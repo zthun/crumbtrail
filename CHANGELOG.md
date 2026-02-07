@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## <small>2.4.8 (2026-02-07)</small>
+
+* chore: spelling ([edf35a7](https://github.com/zthun/crumbtrail/commit/edf35a7))
+* chore: update yarn lockfile [skip ci] ([b3dd6de](https://github.com/zthun/crumbtrail/commit/b3dd6de))
+* fix: run crumbtrail-cli container not as root ([13f8fed](https://github.com/zthun/crumbtrail/commit/13f8fed))
+
+
+
+
+
 ## <small>2.4.7 (2026-02-07)</small>
 
 * fix: cli node directive ([ea3887f](https://github.com/zthun/crumbtrail/commit/ea3887f))
