@@ -7,11 +7,11 @@ directory.
 ## Installation
 
 ```sh
-npm i -g @zthun/crumbtrail-watch
+npm i -g @zthun/crumbtrail-cli
 ```
 
 ## Usage
 
 ```sh
-crumbtrail-watch /path/to/directory
+crumbtrail-cli /path/to/directory
 ```
