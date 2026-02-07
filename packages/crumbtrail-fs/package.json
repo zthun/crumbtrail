@@ -31,7 +31,6 @@
     "@zthun/helpful-fn": "^9.11.5",
     "@zthun/helpful-query": "^9.11.5",
     "chokidar": "^5.0.0",
-    "fast-glob": "^3.3.3",
     "glob": "^13.0.1",
     "lodash-es": "^4.17.23",
     "minimatch": "^10.1.2",
