@@ -1,5 +1,7 @@
 import { ZWatchDelay } from "@zthun/crumbtrail-fs";
-import { sleep } from "@zthun/helpful-fn";
+import { firstTruthy, sleep } from "@zthun/helpful-fn";
+import type { IZLogger } from "@zthun/lumberjacky-log";
+import { ZLogEntryBuilder, ZLoggerContext } from "@zthun/lumberjacky-log";
 import glob from "fast-glob";
 import { noop } from "lodash-es";
 import { readdir } from "node:fs/promises";
@@ -54,6 +56,11 @@ export class ZCrumbtrailNudge {
   private _controller?: AbortController;
   private _resolve?: (val: number) => void;
   private _promise?: Promise<number>;
+  private readonly _logger: IZLogger;
+
+  public constructor(logger: IZLogger) {
+    this._logger = new ZLoggerContext("ZCrumbtrailNudge", logger);
+  }
 
   public async kill(): Promise<void> {
     this._controller?.abort();
@@ -79,14 +86,38 @@ export class ZCrumbtrailNudge {
       every = ZWatchDelay,
     } = options;
 
+    const ms = firstTruthy(ZWatchDelay, every);
+
+    this._logger.log(
+      new ZLogEntryBuilder()
+        .info()
+        .message(`Starting a nudge loop every ${ms} milliseconds`)
+        .build(),
+    );
+
+    if (recursive) {
+      this._logger.log(
+        new ZLogEntryBuilder()
+          .warning()
+          .message("Nudging is recursive.  Child folders will be nudged too.")
+          .build(),
+      );
+    }
+
     do {
+      this._logger.log(
+        new ZLogEntryBuilder()
+          .info()
+          .message(`Nudging ${directory} to refresh`)
+          .build(),
+      );
       await readdir(dirname(directory)).catch(noop);
 
       if (recursive) {
         await glob(`${directory}/**`, { onlyDirectories: true }).catch(noop);
       }
 
-      await sleep(every);
+      await sleep(ms);
     } while (!controller.signal.aborted);
 
     resolve(0);
