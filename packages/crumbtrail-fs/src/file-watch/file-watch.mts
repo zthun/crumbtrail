@@ -1,6 +1,6 @@
 import type { FSWatcher } from "chokidar";
 import { watch } from "chokidar";
-import type { Stats } from "node:fs";
+import { type Stats } from "node:fs";
 import { resolve } from "node:path";
 import type { Observable } from "rxjs";
 import { Subject } from "rxjs";
@@ -121,7 +121,6 @@ export class ZFileWatch implements IZFileWatch {
   public async stop() {
     await this._watcher?.close();
     delete this._watcher;
-    return Promise.resolve();
   }
 
   public add() {

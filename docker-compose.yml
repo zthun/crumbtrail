@@ -1,0 +1,15 @@
+# This isn't actually needed, but the test here is to see how the file system is watched
+# and reported on with mounted folders
+services:
+  crumbtrail-watch:
+    image: node:lts
+    volumes:
+      - .:/usr/dev
+    working_dir: /usr/dev
+    command: yarn workspace @zthun/crumbtrail-cli debug
+  crumbtrail-nudge:
+    image: node:lts
+    volumes:
+      - .:/usr/dev
+    working_dir: /usr/dev
+    command: yarn workspace @zthun/crumbtrail-cli debug nudge --recursive

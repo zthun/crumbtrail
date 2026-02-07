@@ -1,0 +1,21 @@
+{
+  "configurations": [
+    {
+      "name": "Run crumbtrail watch",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/packages/crumbtrail-cli/src/cli.mts",
+      "runtimeExecutable": "tsx",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Run crumbtrail nudge",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/packages/crumbtrail-cli/src/cli.mts",
+      "runtimeExecutable": "tsx",
+      "args": ["nudge", "-e", "1000"],
+      "console": "integratedTerminal"
+    }
+  ]
+}

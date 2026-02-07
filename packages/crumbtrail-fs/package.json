@@ -28,12 +28,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@zthun/helpful-fn": "^9.11.4",
-    "@zthun/helpful-query": "^9.11.4",
+    "@zthun/helpful-fn": "^9.11.5",
+    "@zthun/helpful-query": "^9.11.5",
     "chokidar": "^5.0.0",
-    "glob": "^13.0.0",
+    "glob": "^13.0.1",
     "lodash-es": "^4.17.23",
-    "minimatch": "^10.1.1",
+    "minimatch": "^10.1.2",
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
