@@ -63,6 +63,7 @@ jobs:
             docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
             docker buildx create --use
             docker buildx build --target crumbtrail-web -t zthun/crumbtrail-web:latest -t zthun/crumbtrail-web:$(npm show @zthun/crumbtrail-web version) --progress=plain --platform linux/arm64,linux/amd64 --push .
+            docker buildx build --target crumbtrail-cli -t zthun/crumbtrail-cli:latest -t zthun/crumbtrail-cli:$(npm show @zthun/crumbtrail-cli version) --progress=plain --platform linux/arm64,linux/amd64 --push .
 
 workflows:
   make:
