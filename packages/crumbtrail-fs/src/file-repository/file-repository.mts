@@ -115,9 +115,8 @@ export class ZFileRepository implements IZFileRepository {
 
     this._watcher = new ZFileWatch(path);
 
-    this._add = this._watcher
-      .add()
-      .subscribe(async (node: IZFileSystemNode) => {
+    this._add = this._watcher.add().subscribe((node: IZFileSystemNode) => {
+      void (async () => {
         if (
           node.type === ZFileSystemNodeType.File &&
           this._globs.some((g) => minimatch(node.path, resolve(this._path, g)))
@@ -125,51 +124,56 @@ export class ZFileRepository implements IZFileRepository {
           const nodes = await this._nodes;
           this._nodes = nodes.insert(node);
         }
-      });
+      })();
+    });
 
     this._remove = this._watcher
       .remove()
-      .subscribe(async (node: IZFileSystemNode) => {
-        let nodes = await this._nodes;
-        const path = trimEnd(node.path, sep);
+      .subscribe((node: IZFileSystemNode) => {
+        void (async () => {
+          let nodes = await this._nodes;
+          const path = trimEnd(node.path, sep);
 
-        // It's possible that the node given was a folder.  If that happens,
-        // we need to remove all files that start with the given path.
-        // If the node does point to a file, then there is no possibility that
-        // more than 1 item would be removed.
+          // It's possible that the node given was a folder.  If that happens,
+          // we need to remove all files that start with the given path.
+          // If the node does point to a file, then there is no possibility that
+          // more than 1 item would be removed.
 
-        const next = async () =>
-          findIndex(await nodes.items(), (n) => {
-            return (
-              n.path === path ||
-              (n.path.startsWith(path) &&
-                n.path.substring(path.length).charAt(0) === sep)
-            );
-          });
+          const next = async () =>
+            findIndex(await nodes.items(), (n) => {
+              return (
+                n.path === path ||
+                (n.path.startsWith(path) &&
+                  n.path.substring(path.length).charAt(0) === sep)
+              );
+            });
 
-        for (let index = await next(); index >= 0; index = await next()) {
-          nodes = await nodes.removeAt(index);
-        }
+          for (let index = await next(); index >= 0; index = await next()) {
+            nodes = await nodes.removeAt(index);
+          }
 
-        this._nodes = Promise.resolve(nodes);
+          this._nodes = Promise.resolve(nodes);
+        })();
       });
 
     this._update = this._watcher
       .update()
-      .subscribe(async (node: IZFileSystemNode) => {
-        const nodes = await this._nodes;
-        const index = findIndex(
-          await nodes.items(),
-          (n) => n.path === node.path,
-        );
+      .subscribe((node: IZFileSystemNode) => {
+        void (async () => {
+          const nodes = await this._nodes;
+          const index = findIndex(
+            await nodes.items(),
+            (n) => n.path === node.path,
+          );
 
-        // It's possible node was filtered out by the globs, or
-        // it is a directory.  If so, then we won't have it in our
-        // list.
-        if (index >= 0) {
-          const next = await nodes.removeAt(index);
-          this._nodes = next.insert(node, index);
-        }
+          // It's possible node was filtered out by the globs, or
+          // it is a directory.  If so, then we won't have it in our
+          // list.
+          if (index >= 0) {
+            const next = await nodes.removeAt(index);
+            this._nodes = next.insert(node, index);
+          }
+        })();
       });
 
     // Kick off the initial seed operation with an even loop
