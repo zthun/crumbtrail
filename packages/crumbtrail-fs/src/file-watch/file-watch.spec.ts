@@ -55,26 +55,29 @@ describe("ZFileWatch", () => {
     // This is here for potential future cases.
     // Not all OS's report folders, only MacOS
     // does consistently
-    it.skip("should stream the absolute path when a new folder is created", async () => {
-      // Arrange.
-      const folder = resolve(assets, `${createGuid()}.json`);
-      const onAdd = vi.fn();
-      await mkdir(assets, { recursive: true });
-      const target = await createTestTarget();
-      _subscriptions.push(target.add().subscribe(onAdd));
+    it.todo(
+      "should stream the absolute path when a new folder is created",
+      async () => {
+        // Arrange.
+        const folder = resolve(assets, `${createGuid()}.json`);
+        const onAdd = vi.fn();
+        await mkdir(assets, { recursive: true });
+        const target = await createTestTarget();
+        _subscriptions.push(target.add().subscribe(onAdd));
 
-      // Act.
-      await mkdir(folder);
-      await sleepWatchDelay();
+        // Act.
+        await mkdir(folder);
+        await sleepWatchDelay();
 
-      // Assert.
-      expect(onAdd).toHaveBeenCalledWith(
-        expect.objectContaining({
-          path: folder,
-          type: ZFileSystemNodeType.Folder,
-        }),
-      );
-    });
+        // Assert.
+        expect(onAdd).toHaveBeenCalledWith(
+          expect.objectContaining({
+            path: folder,
+            type: ZFileSystemNodeType.Folder,
+          }),
+        );
+      },
+    );
   });
 
   describe("Update", () => {
@@ -137,23 +140,26 @@ describe("ZFileWatch", () => {
     // This is here for potential future cases.
     // Not all OS's report folders, only MacOS
     // does consistently
-    it.skip("should stream the absolute path of a folder when it is removed", async () => {
-      // Arrange.
-      const onRemove = vi.fn();
-      const folder = resolve(assets, `${createGuid()}`);
-      await mkdir(folder, { recursive: true });
-      const target = await createTestTarget();
-      _subscriptions.push(target.remove().subscribe(onRemove));
+    it.todo(
+      "should stream the absolute path of a folder when it is removed",
+      async () => {
+        // Arrange.
+        const onRemove = vi.fn();
+        const folder = resolve(assets, `${createGuid()}`);
+        await mkdir(folder, { recursive: true });
+        const target = await createTestTarget();
+        _subscriptions.push(target.remove().subscribe(onRemove));
 
-      // Act.
-      await rm(folder, { recursive: true, force: true });
-      await sleepWatchDelay();
+        // Act.
+        await rm(folder, { recursive: true, force: true });
+        await sleepWatchDelay();
 
-      // Assert.
-      expect(onRemove).toHaveBeenCalledWith(
-        expect.objectContaining({ path: folder }),
-      );
-    });
+        // Assert.
+        expect(onRemove).toHaveBeenCalledWith(
+          expect.objectContaining({ path: folder }),
+        );
+      },
+    );
 
     it("should stream the absolute path of the give path if the path itself is removed", async () => {
       // Arrange.

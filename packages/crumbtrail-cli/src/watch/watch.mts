@@ -148,18 +148,15 @@ export class ZCrumbtrailWatch {
   }
 
   private _handleAdd(node: IZFileSystemNode) {
-    const { add } = ZCrumbtrailWatch;
-    this._handleFsEvent(node.path, add(node.path));
+    this._handleFsEvent(node.path, ZCrumbtrailWatch.add(node.path));
   }
 
   private _handleRemove(node: IZFileSystemNode) {
-    const { remove } = ZCrumbtrailWatch;
-    this._handleFsEvent(node.path, remove(node.path));
+    this._handleFsEvent(node.path, ZCrumbtrailWatch.remove(node.path));
   }
 
   private _handleUpdate(node: IZFileSystemNode) {
-    const { update } = ZCrumbtrailWatch;
-    this._handleFsEvent(node.path, update(node.path));
+    this._handleFsEvent(node.path, ZCrumbtrailWatch.update(node.path));
   }
 
   /**
@@ -180,7 +177,6 @@ export class ZCrumbtrailWatch {
     this._resolve = resolve;
     this._promise = promise;
 
-    const { msg } = ZCrumbtrailWatch;
     const { directory = cwd(), globs = ["**"] } = args;
 
     this._globs = uniq(globs.slice());
@@ -188,10 +184,10 @@ export class ZCrumbtrailWatch {
     this._watch = new ZFileWatch(directory);
 
     const filter = globs.join(",");
-    this._logger.log(msg("Welcome to Crumbtrail CLI"));
-    this._logger.log(msg(`You are now watching ${directory}`));
-    this._logger.log(msg(`Files that match ${filter} will be logged here.`));
-    this._logger.log(msg("Press Ctrl+C to stop watching"));
+    this._logger.log(ZCrumbtrailWatch.msg("Welcome to Crumbtrail CLI"));
+    this._logger.log(ZCrumbtrailWatch.msg(`You are now watching ${directory}`));
+    this._logger.log(ZCrumbtrailWatch.msg(`Logging files matching ${filter}.`));
+    this._logger.log(ZCrumbtrailWatch.msg("Press Ctrl+C to stop watching"));
 
     this._watch.add().subscribe(this._handleAdd.bind(this));
     this._watch.remove().subscribe(this._handleRemove.bind(this));
