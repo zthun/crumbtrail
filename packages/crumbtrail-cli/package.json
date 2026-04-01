@@ -40,11 +40,11 @@
     "minimatch": "^10.2.5"
   },
   "devDependencies": {
-    "@zthun/janitor-build-config": "^19.5.6",
-    "@zthun/janitor-ts-config": "^19.5.3",
+    "@zthun/janitor-build-config": "^20.0.2",
+    "@zthun/janitor-ts-config": "^20.0.0",
     "tsx": "^4.21.0",
     "typescript": "~5.9.3",
-    "vite": "^7.3.1",
+    "vite": "^8.0.3",
     "vitest": "^4.1.2",
     "vitest-mock-extended": "^3.1.0"
   },
