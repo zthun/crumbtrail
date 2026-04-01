@@ -1,10 +1,12 @@
+import { readdir } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+
 import { ZWatchDelay } from "@zthun/crumbtrail-fs";
 import { sleep } from "@zthun/helpful-fn";
 import { ZLoggerSilent } from "@zthun/lumberjacky-log";
 import glob from "fast-glob";
-import { readdir } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
 import type { IZCrumbtrailNudgeOptions } from "./nudge.mjs";
 import { ZCrumbtrailNudge } from "./nudge.mjs";
 

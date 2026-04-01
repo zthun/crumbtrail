@@ -1,3 +1,6 @@
+import { resolve } from "node:path";
+import { cwd } from "node:process";
+
 import type { IZFileSystemNode } from "@zthun/crumbtrail-fs";
 import { ZFileWatch } from "@zthun/crumbtrail-fs";
 import { firstDefined } from "@zthun/helpful-fn";
@@ -5,8 +8,6 @@ import type { IZLogEntry, IZLogger } from "@zthun/lumberjacky-log";
 import { ZLogEntryBuilder, ZLoggerContext } from "@zthun/lumberjacky-log";
 import { uniq } from "lodash-es";
 import { minimatch } from "minimatch";
-import { resolve } from "node:path";
-import { cwd } from "node:process";
 
 /**
  * Arguments for the crumbtrail app.

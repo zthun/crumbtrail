@@ -1,12 +1,14 @@
-import type { FSWatcher } from "chokidar";
-import { watch } from "chokidar";
 import { type Stats } from "node:fs";
 import { resolve } from "node:path";
+
+import type { FSWatcher } from "chokidar";
+import { watch } from "chokidar";
 import type { Observable } from "rxjs";
 import { Subject } from "rxjs";
+
 import {
-  ZFileSystemNodeBuilder,
   type IZFileSystemNode,
+  ZFileSystemNodeBuilder,
 } from "../file-system/file-system-node.mjs";
 
 /**

@@ -1,6 +1,8 @@
 import type { Stats } from "node:fs";
 import { stat } from "node:fs/promises";
+
 import { beforeEach, describe, expect, it } from "vitest";
+
 import {
   ZFileSystemNodeBuilder,
   ZFileSystemNodeType,

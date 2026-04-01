@@ -1,11 +1,12 @@
+import { readdir } from "node:fs/promises";
+import { dirname } from "node:path";
+
 import { ZWatchDelay } from "@zthun/crumbtrail-fs";
 import { firstTruthy, sleep } from "@zthun/helpful-fn";
 import type { IZLogger } from "@zthun/lumberjacky-log";
 import { ZLogEntryBuilder, ZLoggerContext } from "@zthun/lumberjacky-log";
 import glob from "fast-glob";
 import { noop } from "lodash-es";
-import { readdir } from "node:fs/promises";
-import { dirname } from "node:path";
 
 /**
  * Options for the nudge command.

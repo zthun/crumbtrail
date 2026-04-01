@@ -1,6 +1,8 @@
 import type { PathLike, Stats } from "node:fs";
 import { readFile, stat, writeFile } from "node:fs/promises";
+
 import { dirname } from "path";
+
 import { resolvePathLike } from "../resolve-path-like/resolve-path-like.js";
 import { ZStreamFolder } from "./stream-folder.mjs";
 import type { IZStreamRead, IZStreamReadOptions } from "./stream-read.mjs";

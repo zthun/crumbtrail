@@ -1,7 +1,8 @@
-import { type ZMutable } from "@zthun/helpful-fn";
-import { isUndefined, omitBy } from "lodash-es";
 import type { Stats } from "node:fs";
 import { basename, dirname, extname } from "node:path";
+
+import { type ZMutable } from "@zthun/helpful-fn";
+import { isUndefined, omitBy } from "lodash-es";
 
 /**
  * Represents a type of a file system node.
@@ -78,13 +79,13 @@ export class ZFileSystemNodeBuilder {
     title: "",
   };
 
-  public created(at?: Date | string | undefined) {
+  public created(at?: Date | string) {
     this._node.created = at instanceof Date ? at.toJSON() : at;
 
     return this;
   }
 
-  public updated(at?: Date | string | undefined) {
+  public updated(at?: Date | string) {
     this._node.updated = at instanceof Date ? at.toJSON() : at;
 
     return this;

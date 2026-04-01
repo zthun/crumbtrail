@@ -1,19 +1,21 @@
+import { resolve, sep } from "node:path";
+
 import { firstDefined, sleep } from "@zthun/helpful-fn";
 import type { IZDataRequest, IZDataSource } from "@zthun/helpful-query";
 import { ZDataSourceStatic } from "@zthun/helpful-query";
 import { find, findIndex, flatten, trimEnd, uniqBy } from "lodash-es";
 import { minimatch } from "minimatch";
-import { resolve, sep } from "node:path";
 import type { Subscription } from "rxjs";
+
 import {
-  ZFileSystemNodeType,
   type IZFileSystemNode,
+  ZFileSystemNodeType,
 } from "../file-system/file-system-node.mjs";
 import {
-  ZFileSystemService,
   type IZFileSystemService,
+  ZFileSystemService,
 } from "../file-system/file-system-service.mjs";
-import { ZFileWatch, type IZFileWatch } from "../file-watch/file-watch.mjs";
+import { type IZFileWatch, ZFileWatch } from "../file-watch/file-watch.mjs";
 
 /**
  * Represents a repository for the file system.

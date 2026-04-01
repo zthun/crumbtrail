@@ -1,15 +1,17 @@
+import { rm } from "node:fs/promises";
+import { resolve } from "node:path";
+import { cwd } from "node:process";
+
 import {
   sleepWatchDelay,
   ZStreamFile,
   ZStreamFolder,
 } from "@zthun/crumbtrail-fs";
 import type { IZLogger } from "@zthun/lumberjacky-log";
-import { rm } from "node:fs/promises";
-import { resolve } from "node:path";
-import { cwd } from "node:process";
 import type { Mocked } from "vitest";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { mock } from "vitest-mock-extended";
+
 import { ZCrumbtrailWatch } from "./watch.mjs";
 
 describe("ZCrumbtrailWatch", () => {

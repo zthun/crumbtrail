@@ -1,7 +1,9 @@
-import { createGuid } from "@zthun/helpful-fn";
 import { rm, stat, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+
+import { createGuid } from "@zthun/helpful-fn";
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
+
 import { ZStreamFolder } from "./stream-folder.mjs";
 
 describe("ZStreamFolder", () => {

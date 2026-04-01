@@ -1,5 +1,6 @@
 import type { PathLike } from "fs";
 import { mkdir } from "fs/promises";
+
 import type { IZStreamWrite } from "./stream-write.mjs";
 
 /**
