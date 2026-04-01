@@ -1,6 +1,6 @@
 {
   "name": "@zthun/crumbtrail-web",
-  "version": "2.4.6",
+  "version": "2.4.9",
   "description": "A documentation website for showing crumbtrail.",
   "author": "Anthony Bonta",
   "license": "MIT",
@@ -18,8 +18,8 @@
     "access": "public"
   },
   "devDependencies": {
-    "@zthun/crumbtrail-fs": "^2.4.6",
-    "@zthun/crumbtrail-nest": "^2.4.6",
+    "@zthun/crumbtrail-fs": "^2.4.9",
+    "@zthun/crumbtrail-nest": "^2.4.9",
     "@zthun/janitor-build-config": "^20.0.2",
     "typedoc": "^0.28.18",
     "typescript": "~5.9.3"
