@@ -3641,7 +3641,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@zthun/crumbtrail-cli@workspace:packages/crumbtrail-cli"
   dependencies:
-    "@zthun/crumbtrail-fs": "npm:^2.4.9"
+    "@zthun/crumbtrail-fs": "npm:^2.4.10"
     "@zthun/helpful-fn": "npm:^9.11.12"
     "@zthun/janitor-build-config": "npm:^20.0.5"
     "@zthun/janitor-ts-config": "npm:^20.0.4"
@@ -3660,7 +3660,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zthun/crumbtrail-fs@npm:^2.4.9, @zthun/crumbtrail-fs@workspace:packages/crumbtrail-fs":
+"@zthun/crumbtrail-fs@npm:^2.4.10, @zthun/crumbtrail-fs@workspace:packages/crumbtrail-fs":
   version: 0.0.0-use.local
   resolution: "@zthun/crumbtrail-fs@workspace:packages/crumbtrail-fs"
   dependencies:
@@ -3680,14 +3680,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zthun/crumbtrail-nest@npm:^2.4.9, @zthun/crumbtrail-nest@workspace:packages/crumbtrail-nest":
+"@zthun/crumbtrail-nest@npm:^2.4.10, @zthun/crumbtrail-nest@workspace:packages/crumbtrail-nest":
   version: 0.0.0-use.local
   resolution: "@zthun/crumbtrail-nest@workspace:packages/crumbtrail-nest"
   dependencies:
     "@nestjs/common": "npm:^11.1.19"
     "@nestjs/core": "npm:^11.1.19"
     "@nestjs/testing": "npm:^11.1.19"
-    "@zthun/crumbtrail-fs": "npm:^2.4.9"
+    "@zthun/crumbtrail-fs": "npm:^2.4.10"
     "@zthun/janitor-build-config": "npm:^20.0.5"
     "@zthun/janitor-ts-config": "npm:^20.0.4"
     reflect-metadata: "npm:^0.2.2"
@@ -3704,8 +3704,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@zthun/crumbtrail-web@workspace:packages/crumbtrail-web"
   dependencies:
-    "@zthun/crumbtrail-fs": "npm:^2.4.9"
-    "@zthun/crumbtrail-nest": "npm:^2.4.9"
+    "@zthun/crumbtrail-fs": "npm:^2.4.10"
+    "@zthun/crumbtrail-nest": "npm:^2.4.10"
     "@zthun/janitor-build-config": "npm:^20.0.5"
     typedoc: "npm:^0.28.19"
     typescript: "npm:~6.0.3"
