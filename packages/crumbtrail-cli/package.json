@@ -1,6 +1,6 @@
 {
   "name": "@zthun/crumbtrail-cli",
-  "version": "2.4.11",
+  "version": "2.4.12",
   "description": "An application for crumbtrail that helps with debugging io issues",
   "author": "Anthony Bonta",
   "license": "MIT",
@@ -31,7 +31,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@zthun/crumbtrail-fs": "^2.4.11",
+    "@zthun/crumbtrail-fs": "^2.4.12",
     "@zthun/helpful-fn": "^10.0.0",
     "@zthun/lumberjacky-log": "^4.0.8",
     "commander": "^15.0.0",
