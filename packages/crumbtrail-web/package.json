@@ -20,8 +20,8 @@
   "devDependencies": {
     "@zthun/crumbtrail-fs": "^2.4.11",
     "@zthun/crumbtrail-nest": "^2.4.11",
-    "@zthun/janitor-build-config": "^20.0.6",
-    "typedoc": "^0.28.19",
+    "@zthun/janitor-build-config": "^21.0.0",
+    "typedoc": "^0.28.20",
     "typescript": "~6.0.3"
   },
   "files": [
