@@ -35,7 +35,7 @@
     "@zthun/janitor-ts-config": "^21.0.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
-    "typescript": "~6.0.3",
+    "typescript": "^6.0.3",
     "vite": "^8.2.1",
     "vitest": "^4.1.10"
   },

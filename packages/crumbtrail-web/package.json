@@ -22,7 +22,7 @@
     "@zthun/crumbtrail-nest": "^2.4.11",
     "@zthun/janitor-build-config": "^21.0.0",
     "typedoc": "^0.28.20",
-    "typescript": "~6.0.3"
+    "typescript": "^6.0.3"
   },
   "files": [
     "dist"
