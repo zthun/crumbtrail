@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 
-import { ZWatchDelay } from "@zthun/crumbtrail-fs";
+import type {
+  IZCrumbtrailJobNudgeOptions,
+  IZCrumbtrailJobWatchOptions,
+} from "@zthun/crumbtrail-fs";
+import {
+  ZCrumbtrailJobNudge,
+  ZCrumbtrailJobWatch,
+  ZWatchDelay,
+} from "@zthun/crumbtrail-fs";
 import { ZLoggerConsole, ZLoggerSilent } from "@zthun/lumberjacky-log";
 import { Command } from "commander";
-
-import type { IZCrumbtrailNudgeOptions } from "./nudge/nudge.mjs";
-import { ZCrumbtrailNudge } from "./nudge/nudge.mjs";
-import type { IZCrumbtrailWatchOptions } from "./watch/watch.mjs";
-import { ZCrumbtrailWatch } from "./watch/watch.mjs";
 
 const logger = new ZLoggerConsole(console);
 const application = new Command();
@@ -26,8 +29,8 @@ application
     (val, prev: string[]) => prev.concat(val),
     [],
   )
-  .action(async (options: IZCrumbtrailWatchOptions) => {
-    const command = new ZCrumbtrailWatch(logger);
+  .action(async (options: IZCrumbtrailJobWatchOptions) => {
+    const command = new ZCrumbtrailJobWatch(logger);
     const result = await command.run(options);
     process.exitCode = result;
   });
@@ -44,10 +47,12 @@ application
     (v) => Number.parseInt(v, 10),
     ZWatchDelay,
   )
-  .action(async (options: IZCrumbtrailNudgeOptions & { silent: boolean }) => {
-    const log = options.silent ? new ZLoggerSilent() : logger;
-    const command = new ZCrumbtrailNudge(log);
-    process.exitCode = await command.run(options);
-  });
+  .action(
+    async (options: IZCrumbtrailJobNudgeOptions & { silent: boolean }) => {
+      const log = options.silent ? new ZLoggerSilent() : logger;
+      const command = new ZCrumbtrailJobNudge(log);
+      process.exitCode = await command.run(options);
+    },
+  );
 
 application.parse();
