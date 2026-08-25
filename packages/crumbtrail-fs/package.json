@@ -30,7 +30,9 @@
   "dependencies": {
     "@zthun/helpful-fn": "^10.0.1",
     "@zthun/helpful-query": "^10.0.1",
+    "@zthun/lumberjacky-log": "^4.0.9",
     "chokidar": "^5.0.0",
+    "fast-glob": "^3.3.3",
     "glob": "^13.0.6",
     "lodash-es": "^4.18.1",
     "minimatch": "^10.2.6",
