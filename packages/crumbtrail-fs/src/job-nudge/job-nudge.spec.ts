@@ -1,14 +1,14 @@
 import { readdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
-import { ZWatchDelay } from "@zthun/crumbtrail-fs";
 import { sleep } from "@zthun/helpful-fn";
 import { ZLoggerSilent } from "@zthun/lumberjacky-log";
 import glob from "fast-glob";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { IZCrumbtrailNudgeOptions } from "./nudge.mjs";
-import { ZCrumbtrailNudge } from "./nudge.mjs";
+import { ZWatchDelay } from "../sleep-watch-delay/sleep-watch-delay.mjs";
+import type { IZCrumbtrailJobNudgeOptions } from "./job-nudge.mjs";
+import { ZCrumbtrailJobNudge } from "./job-nudge.mjs";
 
 vi.mock("fast-glob");
 vi.mock("node:fs/promises");
@@ -16,7 +16,7 @@ vi.mock("node:fs/promises");
 describe("ZCrumbtrailNudge", () => {
   const _glob = vi.mocked(glob);
   const _readdir = vi.mocked(readdir);
-  let _target: ZCrumbtrailNudge;
+  let _target: ZCrumbtrailJobNudge;
 
   beforeEach(() => {
     _glob.mockResolvedValue([]);
@@ -31,11 +31,11 @@ describe("ZCrumbtrailNudge", () => {
   });
 
   const createTestTarget = () => {
-    _target = new ZCrumbtrailNudge(new ZLoggerSilent());
+    _target = new ZCrumbtrailJobNudge(new ZLoggerSilent());
     return _target;
   };
 
-  const createRunTarget = (options: IZCrumbtrailNudgeOptions = {}) => {
+  const createRunTarget = (options: IZCrumbtrailJobNudgeOptions = {}) => {
     const target = createTestTarget();
     void target.run(options);
     return target;

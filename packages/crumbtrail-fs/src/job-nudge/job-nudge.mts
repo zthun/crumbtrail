@@ -1,17 +1,18 @@
 import { readdir } from "node:fs/promises";
 import { dirname } from "node:path";
 
-import { ZWatchDelay } from "@zthun/crumbtrail-fs";
 import { firstTruthy, sleep } from "@zthun/helpful-fn";
 import type { IZLogger } from "@zthun/lumberjacky-log";
 import { ZLogEntryBuilder, ZLoggerContext } from "@zthun/lumberjacky-log";
 import glob from "fast-glob";
 import { noop } from "lodash-es";
 
+import { ZWatchDelay } from "../sleep-watch-delay/sleep-watch-delay.mjs";
+
 /**
  * Options for the nudge command.
  */
-export interface IZCrumbtrailNudgeOptions {
+export interface IZCrumbtrailJobNudgeOptions {
   /**
    * The directory to nudge.
    *
@@ -53,7 +54,7 @@ export interface IZCrumbtrailNudgeOptions {
  * Run a separate container in the background and just nudge the directory
  * for however long you need.
  */
-export class ZCrumbtrailNudge {
+export class ZCrumbtrailJobNudge {
   private _controller?: AbortController;
   private _resolve?: (val: number) => void;
   private _promise?: Promise<number>;
@@ -71,7 +72,7 @@ export class ZCrumbtrailNudge {
     delete this._promise;
   }
 
-  public async run(options: IZCrumbtrailNudgeOptions = {}): Promise<number> {
+  public async run(options: IZCrumbtrailJobNudgeOptions = {}): Promise<number> {
     await this.kill();
 
     const controller = new AbortController();

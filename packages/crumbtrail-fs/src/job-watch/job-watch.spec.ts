@@ -2,23 +2,21 @@ import { rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { cwd } from "node:process";
 
-import {
-  sleepWatchDelay,
-  ZStreamFile,
-  ZStreamFolder,
-} from "@zthun/crumbtrail-fs";
 import type { IZLogger } from "@zthun/lumberjacky-log";
 import type { Mocked } from "vitest";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { mock } from "vitest-mock-extended";
 
-import { ZCrumbtrailWatch } from "./watch.mjs";
+import { sleepWatchDelay } from "../sleep-watch-delay/sleep-watch-delay.mjs";
+import { ZStreamFile } from "../stream/stream-file.mjs";
+import { ZStreamFolder } from "../stream/stream-folder.mjs";
+import { ZCrumbtrailJobWatch } from "./job-watch.mjs";
 
 describe("ZCrumbtrailWatch", () => {
   const directory = resolve(__dirname, ".test.cli");
 
   let logger: Mocked<IZLogger>;
-  let _target: ZCrumbtrailWatch | undefined;
+  let _target: ZCrumbtrailJobWatch | undefined;
 
   beforeEach(() => {
     logger = mock<IZLogger>();
@@ -30,7 +28,7 @@ describe("ZCrumbtrailWatch", () => {
   });
 
   const createTestTarget = () => {
-    _target = new ZCrumbtrailWatch(logger);
+    _target = new ZCrumbtrailJobWatch(logger);
     return _target;
   };
 
@@ -155,7 +153,7 @@ describe("ZCrumbtrailWatch", () => {
       it("should log that a file was added", async () => {
         // Arrange.
         const path = resolve(directory, "sample.js");
-        const expected = ZCrumbtrailWatch.add(path);
+        const expected = ZCrumbtrailJobWatch.add(path);
         await createReadyTarget();
 
         // Act.
@@ -190,7 +188,7 @@ describe("ZCrumbtrailWatch", () => {
         // Arrange.
         const path = resolve(directory, "sample.js");
         await file.write(path);
-        const expected = ZCrumbtrailWatch.remove(path);
+        const expected = ZCrumbtrailJobWatch.remove(path);
         await createReadyTarget([]);
 
         // Act.
@@ -226,7 +224,7 @@ describe("ZCrumbtrailWatch", () => {
         // Arrange.
         const path = resolve(directory, "sample.js");
         await file.write(path);
-        const expected = ZCrumbtrailWatch.update(path);
+        const expected = ZCrumbtrailJobWatch.update(path);
         await createReadyTarget();
 
         // Act.
