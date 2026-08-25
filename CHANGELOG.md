@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/zthun/crumbtrail/compare/v2.4.12...v3.0.0) (2026-08-25)
+
+### Code Refactoring
+
+- cli only ([e84043d](https://github.com/zthun/crumbtrail/commit/e84043d2bcaca2a7508fbeac09c9377118c59616))
+- move internals ([06926cb](https://github.com/zthun/crumbtrail/commit/06926cb6fe97e487582176ec64067eb4a6e17ef1))
+
+### Features
+
+- nudge and watch jobs from cli have been moved into crumbtrail-fs ([251906b](https://github.com/zthun/crumbtrail/commit/251906b0f9e2f7c69875e2145a33cb08b4acb51a))
+
+### BREAKING CHANGES
+
+- Crumbtrail cli no longer exports its internal api
+- crumbtrail-cli's nudge and watch jobs have been moved down to crumbtrail-fs
+
 ## [2.4.12](https://github.com/zthun/crumbtrail/compare/v2.4.11...v2.4.12) (2026-08-10)
 
 **Note:** Version bump only for package @zthun/crumbtrail

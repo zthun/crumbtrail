@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/zthun/crumbtrail/compare/v2.4.12...v3.0.0) (2026-08-25)
+
+### Features
+
+- nudge and watch jobs from cli have been moved into crumbtrail-fs ([251906b](https://github.com/zthun/crumbtrail/commit/251906b0f9e2f7c69875e2145a33cb08b4acb51a))
+
 ## [2.4.12](https://github.com/zthun/crumbtrail/compare/v2.4.11...v2.4.12) (2026-08-10)
 
 **Note:** Version bump only for package @zthun/crumbtrail-fs
