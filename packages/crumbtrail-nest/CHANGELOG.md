@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/zthun/crumbtrail/compare/v3.0.0...v3.0.1) (2026-08-25)
+
+### Bug Fixes
+
+- crumbtrail cli should now properly externalize dependencies ([b7874c8](https://github.com/zthun/crumbtrail/commit/b7874c8185b0d23f1e4bf675439ea3dd8d483156))
+
 # [3.0.0](https://github.com/zthun/crumbtrail/compare/v2.4.12...v3.0.0) (2026-08-25)
 
 **Note:** Version bump only for package @zthun/crumbtrail-nest
