@@ -128,7 +128,7 @@ describe("ZCrumbtrailWatch", () => {
     });
   });
 
-  describe.sequential("IO", () => {
+  describe("IO", () => {
     const file = new ZStreamFile();
     const folder = new ZStreamFolder();
 
@@ -149,7 +149,7 @@ describe("ZCrumbtrailWatch", () => {
       await rm(directory, { force: true, recursive: true });
     });
 
-    describe.sequential("Add", () => {
+    describe("Add", () => {
       it("should log that a file was added", async () => {
         // Arrange.
         const path = resolve(directory, "sample.js");
@@ -183,7 +183,7 @@ describe("ZCrumbtrailWatch", () => {
       });
     });
 
-    describe.sequential("Remove", () => {
+    describe("Remove", () => {
       it("should log that a file was removed", async () => {
         // Arrange.
         const path = resolve(directory, "sample.js");
@@ -219,7 +219,7 @@ describe("ZCrumbtrailWatch", () => {
       });
     });
 
-    describe.sequential("Update", () => {
+    describe("Update", () => {
       it("should log that a file was updated", async () => {
         // Arrange.
         const path = resolve(directory, "sample.js");
