@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](https://github.com/zthun/crumbtrail/compare/v3.0.3...v3.0.4) (2026-10-14)
+
+**Note:** Version bump only for package @zthun/crumbtrail-nest
+
 ## [3.0.3](https://github.com/zthun/crumbtrail/compare/v3.0.2...v3.0.3) (2026-10-01)
 
 **Note:** Version bump only for package @zthun/crumbtrail-nest
