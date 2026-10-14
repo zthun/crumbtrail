@@ -45,9 +45,3 @@ RUN addgroup -g ${GID} -S ${GROUP} && \
 USER ${USER}
 WORKDIR /home/${USER}
 CMD ["crumbtrail-cli"]
-
-FROM node:lts-alpine AS crumbtrail-web-install
-RUN npm install -g @zthun/crumbtrail-web
-
-FROM nginx:stable-alpine AS crumbtrail-web
-COPY --from=crumbtrail-web-install /usr/local/lib/node_modules/@zthun/crumbtrail-web/dist/. /usr/share/nginx/html/
